@@ -13,6 +13,12 @@ eggCookie.set('foo', 'bar', {});
 cookie.set('foo', 'bar', {});
 
 suite
+.add('create EggCookie', function() {
+  createEggCookie();
+})
+.add('create Cookie', function() {
+  createCookie();
+})
 .add('EggCookies.set with signed', function() {
   createEggCookie().set('foo', 'bar', { signed: true });
 })
@@ -85,8 +91,10 @@ function createCookie() {
   return new Cookies(ctx.req, ctx.res, { keys: [ 'key' ] });
 }
 
-// EggCookies.set with signed     x  98,816 ops/sec ±1.24% (83 runs sampled)
-// Cookies.set with signed        x  75,334 ops/sec ±1.34% (83 runs sampled)
-// EggCookies.set without signed  x 518,623 ops/sec ±0.74% (86 runs sampled)
-// Cookies.set without signed     x 302,208 ops/sec ±2.06% (82 runs sampled)
-// EggCookies.set without encrypt x  83,854 ops/sec ±1.07% (81 runs sampled)
+// create EggCookie               x 4,606,537 ops/sec ±4.11% (78 runs sampled)
+// create Cookie                  x   683,980 ops/sec ±2.93% (81 runs sampled)
+// EggCookies.set with signed     x   110,234 ops/sec ±1.21% (85 runs sampled)
+// Cookies.set with signed        x    76,925 ops/sec ±1.68% (81 runs sampled)
+// EggCookies.set without signed  x   513,459 ops/sec ±0.99% (86 runs sampled)
+// Cookies.set without signed     x   288,745 ops/sec ±1.87% (82 runs sampled)
+// EggCookies.set without encrypt x    76,958 ops/sec ±2.55% (76 runs sampled)
