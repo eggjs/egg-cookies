@@ -6,6 +6,8 @@ const EggCookies = require('..');
 const Cookies = require('cookies');
 const suite = new Benchmark.Suite();
 
+const keys = [ 'this is a very very loooooooooooooooooooooooooooooooooooooong key' ];
+
 const eggCookie = createEggCookie();
 const cookie = createCookie();
 
@@ -31,7 +33,7 @@ suite
 .add('Cookies.set without signed', function() {
   createCookie().set('foo', 'bar', { signed: false });
 })
-.add('EggCookies.set without encrypt', function() {
+.add('EggCookies.set with encrypt', function() {
   createEggCookie().set('foo', 'bar', { encrypt: true });
 })
 .on('cycle', event => benchmarks.add(event.target))
@@ -84,17 +86,17 @@ function createCtx(egg) {
 }
 
 function createEggCookie() {
-  return new EggCookies(createCtx(true), [ 'key' ]);
+  return new EggCookies(createCtx(true), keys);
 }
 function createCookie() {
   const ctx = createCtx();
-  return new Cookies(ctx.req, ctx.res, { keys: [ 'key' ] });
+  return new Cookies(ctx.req, ctx.res, { keys });
 }
 
-// create EggCookie               x 4,606,537 ops/sec ±4.11% (78 runs sampled)
-// create Cookie                  x   683,980 ops/sec ±2.93% (81 runs sampled)
-// EggCookies.set with signed     x   110,234 ops/sec ±1.21% (85 runs sampled)
-// Cookies.set with signed        x    76,925 ops/sec ±1.68% (81 runs sampled)
-// EggCookies.set without signed  x   513,459 ops/sec ±0.99% (86 runs sampled)
-// Cookies.set without signed     x   288,745 ops/sec ±1.87% (82 runs sampled)
-// EggCookies.set without encrypt x    76,958 ops/sec ±2.55% (76 runs sampled)
+// create EggCookie               x 6,122,689 ops/sec ±1.94% (84 runs sampled)
+// create Cookie                  x   915,465 ops/sec ±2.64% (79 runs sampled)
+// EggCookies.set with signed     x   105,077 ops/sec ±0.84% (86 runs sampled)
+// Cookies.set with signed        x    69,956 ops/sec ±2.21% (80 runs sampled)
+// EggCookies.set without signed  x   477,852 ops/sec ±1.04% (87 runs sampled)
+// Cookies.set without signed     x   355,754 ops/sec ±1.96% (83 runs sampled)
+// EggCookies.set with encrypt    x    88,396 ops/sec ±1.19% (83 runs sampled)
