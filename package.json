@@ -13,6 +13,9 @@
   },
   "devDependencies": {
     "autod": "^2.7.1",
+    "beautify-benchmark": "^0.2.4",
+    "benchmark": "^2.1.2",
+    "cookies": "^0.6.2",
     "egg-bin": "^1.7.0",
     "egg-ci": "^1.1.0",
     "eslint": "^3.10.2",
