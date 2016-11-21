@@ -8,6 +8,21 @@ const Cookies = require('../cookies');
 const assert = require('power-assert');
 
 describe('test/lib/cookies.test.js', () => {
+  it('should encrypt error when keys not present', () => {
+    const cookies = Cookies({}, { keys: null });
+    try {
+      cookies.set('foo', 'bar', { encrypt: true });
+      throw new Error('should not exec');
+    } catch (err) {
+      assert(err.message === '.keys required for encrypt/sign cookies');
+    }
+  });
+
+  it('should not thrown when keys not present and do not use encrypt or sign', () => {
+    const cookies = Cookies({}, { keys: null });
+    cookies.set('foo', 'bar', { encrypt: false, signed: false });
+  });
+
   it('should encrypt ok', () => {
     const cookies = Cookies();
     cookies.set('foo', 'bar', { encrypt: true });

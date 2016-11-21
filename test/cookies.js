@@ -5,6 +5,7 @@ const Cookies = require('..');
 module.exports = (req, options) => {
   options = options || {};
   let keys = options.keys;
+  keys = keys === undefined ? [ 'key', 'keys' ] : keys;
   const ctx = { secure: options.secure };
   ctx.request = Object.assign({
     headers: {},
@@ -26,6 +27,5 @@ module.exports = (req, options) => {
   ctx.get = ctx.request.get.bind(ctx.request);
   ctx.set = ctx.response.set.bind(ctx.response);
 
-  keys = keys || [ 'key', 'keys' ];
   return new Cookies(ctx, keys);
 };
