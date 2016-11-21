@@ -91,7 +91,7 @@ describe('test/lib/cookies.test.js', () => {
       headers: { cookie: 'foo=bar;foo.sig=bar.sig;' },
     });
     assert(cookies.get('foo', { signed: true }) === undefined);
-    assert(cookies.ctx.response.headers['set-cookie'][0] === 'foo.sig=; path=/; httponly');
+    assert(cookies.ctx.response.headers['set-cookie'][0] === 'foo.sig=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httponly');
   });
 
   it('should update .sig if not match the first key', () => {

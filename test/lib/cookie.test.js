@@ -11,6 +11,10 @@ describe('test/lib/cookie.test.js', () => {
     assert(shouldThrow(() => new Cookie('name', 'value', { domain: '中文' })) === 'argument option domain is invalid');
   });
 
+  it('set expires to 0 if value not present', () => {
+    assert(new Cookie('name', null).attrs.expires.getTime() === 0);
+  });
+
   it('toString() return name=vaule', () => {
     assert(new Cookie('name', 'value').toString() === 'name=value');
   });
