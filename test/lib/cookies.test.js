@@ -33,6 +33,11 @@ describe('test/lib/cookies.test.js', () => {
     assert(cookie.indexOf('bar') === -1);
   });
 
+  it('should cache eygrip', () => {
+    const keys = [ 'key' ];
+    assert(Cookies({}, { keys }).keys === Cookies({}, { keys }).keys);
+  });
+
   it('should encrypt failed return undefined', () => {
     const cookies = Cookies();
     cookies.set('foo', 'bar', { encrypt: true });
@@ -172,5 +177,14 @@ describe('test/lib/cookies.test.js', () => {
     } catch (err) {
       assert(err.message === 'Cannot send secure cookie over unencrypted connection');
     }
+  });
+
+  it('should set cookie success when set-cookie already exist', () => {
+    const cookies = Cookies();
+    cookies.ctx.response.headers['set-cookie'] = 'foo=bar';
+    cookies.set('foo1', 'bar1');
+    assert(cookies.ctx.response.headers['set-cookie'][0] === 'foo=bar');
+    assert(cookies.ctx.response.headers['set-cookie'][1] === 'foo1=bar1; path=/; httponly');
+    assert(cookies.ctx.response.headers['set-cookie'][2] === 'foo1.sig=_OGF14M_XqPTd58nMRUco2iwwhlZvq7h8ifl3Kej_jg; path=/; httponly');
   });
 });
