@@ -139,6 +139,19 @@ describe('test/lib/cookies.test.js', () => {
     assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/foo=hello/));
   });
 
+  it('should remove signed cookie ok', () => {
+    const cookies = Cookies();
+    cookies.set('foo', null, { signed: true });
+    assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/foo=; path=\/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httponly/));
+    assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/foo\.sig=; path=\/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httponly/));
+  });
+
+  it('should remove encrypt cookie ok', () => {
+    const cookies = Cookies();
+    cookies.set('foo', null, { encrypt: true });
+    assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/foo=; path=\/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httponly/));
+  });
+
   it('should add secure when ctx.secure = true', () => {
     const cookies = Cookies({}, { secure: true });
     cookies.set('foo', 'bar');
