@@ -59,10 +59,10 @@ suite
   createEggCookie().get('eggSign', { signed: false });
 })
 .add('Cookies.get without signed', function() {
-  createEggCookie().get('sign', { signed: false });
+  createCookie().get('sign', { signed: false });
 })
 .add('EggCookies.get with encrypt', function() {
-  createEggCookie().get('eggEncrypt', { encrypt: false });
+  createEggCookie().get('eggEncrypt', { encrypt: true });
 })
 .on('cycle', event => benchmarks.add(event.target))
 .on('start', () => console.log('\n  node version: %s, date: %s\n  Starting...', process.version, Date()))
@@ -121,15 +121,15 @@ function createCookie() {
   return new Cookies(ctx.req, ctx.res, { keys });
 }
 
-// create EggCookie              x 6,251,382 ops/sec ±0.87% (86 runs sampled)
-// create Cookie                 x   904,067 ops/sec ±2.36% (78 runs sampled)
-// EggCookies.set with signed    x    92,009 ops/sec ±1.16% (86 runs sampled)
-// Cookies.set with signed       x    67,426 ops/sec ±2.37% (83 runs sampled)
-// EggCookies.set without signed x   455,434 ops/sec ±0.77% (87 runs sampled)
-// Cookies.set without signed    x   341,823 ops/sec ±2.54% (78 runs sampled)
-// EggCookies.set with encrypt   x    83,106 ops/sec ±1.17% (81 runs sampled)
-// EggCookies.get with signed    x    85,097 ops/sec ±1.53% (85 runs sampled)
-// Cookies.get with signed       x    87,334 ops/sec ±2.92% (77 runs sampled)
-// EggCookies.get without signed x 2,120,445 ops/sec ±1.08% (86 runs sampled)
-// Cookies.get without signed    x 1,988,503 ops/sec ±1.41% (85 runs sampled)
-// EggCookies.get with encrypt   x   749,463 ops/sec ±1.26% (83 runs sampled)
+// create EggCookie              x 5,999,177 ops/sec ±2.61% (82 runs sampled)
+// create Cookie                 x   850,087 ops/sec ±4.30% (76 runs sampled)
+// EggCookies.set with signed    x    95,845 ops/sec ±1.06% (87 runs sampled)
+// Cookies.set with signed       x    67,529 ops/sec ±2.32% (80 runs sampled)
+// EggCookies.set without signed x   503,289 ops/sec ±0.86% (85 runs sampled)
+// Cookies.set without signed    x   343,363 ops/sec ±2.27% (83 runs sampled)
+// EggCookies.set with encrypt   x    79,859 ops/sec ±2.29% (80 runs sampled)
+// EggCookies.get with signed    x    86,470 ops/sec ±6.10% (78 runs sampled)
+// Cookies.get with signed       x    90,658 ops/sec ±2.75% (79 runs sampled)
+// EggCookies.get without signed x 2,088,065 ops/sec ±0.91% (85 runs sampled)
+// Cookies.get without signed    x   727,996 ops/sec ±2.13% (74 runs sampled)
+// EggCookies.get with encrypt   x    79,032 ops/sec ±1.47% (81 runs sampled)
