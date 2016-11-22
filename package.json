@@ -1,7 +1,7 @@
 {
   "name": "egg-cookies",
-  "version": "1.0.0",
-  "description": "cookies module for egg, base on pillarjs/cookies",
+  "version": "2.0.0",
+  "description": "cookies module for egg",
   "files": [
     "lib"
   ],
