@@ -1,30 +1,31 @@
 'use strict';
 
 const Cookies = require('..');
-const Keygrip = require('./keygrip');
 
 module.exports = (req, options) => {
   options = options || {};
   let keys = options.keys;
+  keys = keys === undefined ? [ 'key', 'keys' ] : keys;
   const ctx = { secure: options.secure };
-  ctx.req = Object.assign({
-    connection: {},
+  ctx.request = Object.assign({
     headers: {},
-  }, req);
-
-  ctx.res = {
-    headers: {},
-    getHeader(key) {
+    get(key) {
       return this.headers[key];
     },
-    setHeader(key, value) {
+  }, req);
+
+  ctx.response = {
+    headers: {},
+    get(key) {
+      return this.headers[key];
+    },
+    set(key, value) {
       this.headers[key] = value;
     },
   };
 
-  if (keys !== false) {
-    keys = keys || new Keygrip([ 'key', 'keys' ]);
-  }
+  ctx.get = ctx.request.get.bind(ctx.request);
+  ctx.set = ctx.response.set.bind(ctx.response);
 
   return new Cookies(ctx, keys);
 };
