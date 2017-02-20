@@ -24,7 +24,7 @@ Extends [pillarjs/cookies](https://github.com/pillarjs/cookies) to adapt koa and
 
 ### Encrypt
 
-egg-cookies provide an alternative `encrypt` mode like `signed`. An encrypt cookie's value will encrypted base on keys. Anyone who don't have the keys are unable to know the original cookie's value.
+egg-cookies provide an alternative `encrypt` mode like `signed`. An encrypt cookie's value will be encrypted base on keys. Anyone who don't have the keys are unable to know the original cookie's value.
 
 ```js
 const Cookies = require('egg-cookies');
