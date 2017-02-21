@@ -187,4 +187,20 @@ describe('test/lib/cookies.test.js', () => {
     assert(cookies.ctx.response.headers['set-cookie'][1] === 'foo1=bar1; path=/; httponly');
     assert(cookies.ctx.response.headers['set-cookie'][2] === 'foo1.sig=_OGF14M_XqPTd58nMRUco2iwwhlZvq7h8ifl3Kej_jg; path=/; httponly');
   });
+
+  it('should emit cookieLimitExceed event when value\'s length exceed the limit', done => {
+    const cookies = Cookies();
+    const value = new Buffer(4094).fill(49).toString();
+    cookies.on('cookieLimitExceed', params => {
+      assert(params.name === 'foo');
+      assert(params.value === value);
+      // check set-cookie header
+      setImmediate(() => {
+        assert(cookies.ctx.response.headers['set-cookie'][0].match(/foo=1{4094};/));
+        done();
+      });
+    });
+    cookies.set('foo', value);
+
+  });
 });
