@@ -1,4 +1,10 @@
 
+2.2.0 / 2017-02-21
+==================
+
+  * feat: check cookie value's length (#4)
+  * feat: support cookie.sameSite (#3)
+
 2.1.0 / 2016-11-22
 ==================
 
