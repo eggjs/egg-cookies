@@ -1,12 +1,14 @@
 'use strict';
 
 const Cookies = require('..');
+const EventEmitter = require('events');
 
 module.exports = (req, options) => {
   options = options || {};
   let keys = options.keys;
   keys = keys === undefined ? [ 'key', 'keys' ] : keys;
   const ctx = { secure: options.secure };
+  ctx.app = new EventEmitter();
   ctx.request = Object.assign({
     headers: {},
     get(key) {

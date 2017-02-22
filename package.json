@@ -20,7 +20,6 @@
     "egg-ci": "^1.1.0",
     "eslint": "^3.10.2",
     "eslint-config-egg": "^3.2.0",
-    "intelli-espower-loader": "^1.0.1",
     "keygrip": "^1.0.1",
     "power-assert": "^1.4.2"
   },
@@ -31,8 +30,8 @@
   "homepage": "https://github.com/eggjs/egg-cookies",
   "author": "fengmk2 <fengmk2@gmail.com> (https://fengmk2.com)",
   "scripts": {
-    "test": "egg-bin test --require intelli-espower-loader",
-    "cov": "egg-bin cov --require intelli-espower-loader",
+    "test": "egg-bin test",
+    "cov": "egg-bin cov",
     "lint": "eslint index.js test",
     "ci": "npm run lint && npm run cov",
     "autod": "autod"
