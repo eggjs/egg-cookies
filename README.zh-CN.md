@@ -58,3 +58,7 @@ ctx.cookies.set('key', 'value', options);
 ## 删除 cookie
 
 通过 `cookie.set(key, null)` 来删除一个 cookie。如果传递了 `signed` 参数，签名也会被删除。
+
+## License
+
+[MIT](LICENSE.txt)

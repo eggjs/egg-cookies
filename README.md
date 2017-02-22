@@ -50,3 +50,7 @@ cookies.on('cookieLimitExceed', { name, value } => {
 
 cookies.set('foo', longText);
 ```
+
+## License
+
+[MIT](LICENSE.txt)
