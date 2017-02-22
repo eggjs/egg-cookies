@@ -5,7 +5,6 @@
  */
 
 const Cookies = require('../cookies');
-const EventEmitter = require('events');
 const assert = require('power-assert');
 
 describe('test/lib/cookies.test.js', () => {
