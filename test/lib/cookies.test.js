@@ -203,4 +203,16 @@ describe('test/lib/cookies.test.js', () => {
     });
     cookies.set('foo', value);
   });
+
+  it('should opts do not modify', () => {
+    const cookies = Cookies({ secure: true });
+    const opts = {
+      signed: 1,
+    };
+    cookies.set('foo', 'hello', opts);
+
+    assert(opts.signed === 1);
+    assert(opts.secure === undefined);
+    assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/foo=hello/));
+  });
 });
