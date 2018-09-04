@@ -3,12 +3,17 @@
 const Cookie = require('../../lib/cookie');
 const assert = require('power-assert');
 
+function assertExceptionCheck(expectedMsg) {
+  return err => {
+    return err.message === expectedMsg;
+  };
+}
 describe('test/lib/cookie.test.js', () => {
   it('create cookies contains invalid string error should throw', () => {
-    assert.throws(() => new Cookie('中文', 'value'), 'argument name is invalid');
-    assert.throws(() => new Cookie('name', '中文'), 'argument value is invalid');
-    assert.throws(() => new Cookie('name', 'value', { path: '中文' }), 'argument option path is invalid');
-    assert.throws(() => new Cookie('name', 'value', { domain: '中文' }), 'argument option domain is invalid');
+    assert.throws(() => new Cookie('中文', 'value'), assertExceptionCheck('argument name is invalid'));
+    assert.throws(() => new Cookie('name', '中文'), assertExceptionCheck('argument value is invalid'));
+    assert.throws(() => new Cookie('name', 'value', { path: '中文' }), assertExceptionCheck('argument option path is invalid'));
+    assert.throws(() => new Cookie('name', 'value', { domain: '中文' }), assertExceptionCheck('argument option domain is invalid'));
   });
 
   it('set expires to 0 if value not present', () => {
