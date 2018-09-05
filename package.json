@@ -12,6 +12,7 @@
     "utility": "^1.9.0"
   },
   "devDependencies": {
+    "@types/node": "^10.9.4",
     "autod": "^2.7.1",
     "beautify-benchmark": "^0.2.4",
     "benchmark": "^2.1.2",
@@ -19,9 +20,11 @@
     "egg-bin": "^1.7.0",
     "egg-ci": "^1.1.0",
     "eslint": "^3.10.2",
-    "eslint-config-egg": "^3.2.0",
+    "eslint-config-egg": "^7.0.0",
     "keygrip": "^1.0.1",
-    "power-assert": "^1.4.2"
+    "power-assert": "^1.4.2",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.0.3"
   },
   "repository": {
     "type": "git",
@@ -30,16 +33,16 @@
   "homepage": "https://github.com/eggjs/egg-cookies",
   "author": "fengmk2 <fengmk2@gmail.com> (https://fengmk2.com)",
   "scripts": {
-    "test": "egg-bin test",
+    "test": "npm run lint -- --fix && egg-bin test",
     "cov": "egg-bin cov",
     "lint": "eslint index.js test",
     "ci": "npm run lint && npm run cov",
     "autod": "autod"
   },
   "engines": {
-    "node": ">= 4.0.0"
+    "node": ">= 8.0.0"
   },
   "ci": {
-    "version": "4, 6, 7"
+    "version": "8, 9"
   }
 }
