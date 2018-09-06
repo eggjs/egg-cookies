@@ -31,7 +31,7 @@ describe('test/lib/cookies.test.js', () => {
 
   it('should cache eygrip', () => {
     const keys = [ 'key' ];
-    assert(Cookies({}, { keys }).keys === Cookies({}, { keys }).keys);
+    assert(Cookies({}, { keys }).keys === Cookies({}, { keys }).keys); // eslint-disable-line no-self-compare
   });
 
   it('should encrypt failed return undefined', () => {

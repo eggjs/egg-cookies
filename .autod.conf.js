@@ -8,6 +8,5 @@ module.exports = {
     'egg-bin',
     'eslint',
     'eslint-config-egg',
-    'intelli-espower-loader',
   ],
 };
