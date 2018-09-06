@@ -1,3 +1,9 @@
+2.2.3 / 2018-09-06
+==================
+
+  * chore: adjust some dep && config (#13)
+  * test: Add unit tests for ts (#12)
+  * chore(typings):  Extract 'EggCookies' for TypeScript intellisense (#11)
 
 2.2.2 / 2017-12-14
 ==================
