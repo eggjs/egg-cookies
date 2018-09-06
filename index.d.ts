@@ -61,6 +61,11 @@ declare namespace EggCookies {
 }
 
 declare class EggCookies {
+  
+  // For tests only, so we don't exclipt their real types
+  ctx: any;
+  constructor(ctx?: any, keys?: any);
+
   /**
    * Get the Egg's cookies by name with optional options.
    * @param name The Egg's cookie's unique name.
