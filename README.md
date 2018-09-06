@@ -22,7 +22,7 @@
 
 Extends [pillarjs/cookies](https://github.com/pillarjs/cookies) to adapt koa and egg with some additional features.
 
-### Encrypt
+## Encrypt
 
 egg-cookies provide an alternative `encrypt` mode like `signed`. An encrypt cookie's value will be encrypted base on keys. Anyone who don't have the keys are unable to know the original cookie's value.
 
@@ -36,7 +36,7 @@ cookies.get('foo', { encrypt: true });
 
 **Note: you should both indicating in get and set in pairs.**
 
-### Cookie Length Check
+## Cookie Length Check
 
 [Browsers all had some limitation in cookie's length](http://browsercookielimits.squawky.net/), so if set a cookie with an extremely long value(> 4093), egg-cookies will emit an `cookieLimitExceed` event. You can listen to this event and record.
 

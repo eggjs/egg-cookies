@@ -1,11 +1,7 @@
 'use strict';
 
-/**
- * Module dependencies.
- */
-
 const Cookies = require('../cookies');
-const assert = require('power-assert');
+const assert = require('assert');
 
 describe('test/lib/cookies.test.js', () => {
   it('should encrypt error when keys not present', () => {

@@ -22,7 +22,6 @@
     "eslint": "^3.10.2",
     "eslint-config-egg": "^7.0.0",
     "keygrip": "^1.0.1",
-    "power-assert": "^1.4.2",
     "ts-node": "^7.0.1",
     "typescript": "^3.0.3"
   },
@@ -35,7 +34,7 @@
   "scripts": {
     "test": "npm run lint -- --fix && egg-bin test",
     "cov": "egg-bin cov",
-    "lint": "eslint index.js test",
+    "lint": "eslint .",
     "ci": "npm run lint && npm run cov",
     "autod": "autod"
   },
@@ -43,6 +42,6 @@
     "node": ">= 8.0.0"
   },
   "ci": {
-    "version": "8, 9"
+    "version": "8, 10"
   }
 }
