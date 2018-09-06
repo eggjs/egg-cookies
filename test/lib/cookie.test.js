@@ -1,7 +1,7 @@
 'use strict';
 
 const Cookie = require('../../lib/cookie');
-const assert = require('power-assert');
+const assert = require('assert');
 
 function assertExceptionCheck(expectedMsg) {
   return err => {

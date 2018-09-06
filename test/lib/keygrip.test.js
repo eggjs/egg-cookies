@@ -1,7 +1,7 @@
 'use strict';
 
 const Keygrip = require('../../lib/keygrip');
-const assert = require('power-assert');
+const assert = require('assert');
 
 describe('test/lib/keygrip.test.js', () => {
   it('should throw without keys', () => {
