@@ -61,9 +61,7 @@ declare namespace EggCookies {
 }
 
 declare class EggCookies {
-  
-  // For tests only, so we don't exclipt their real types
-  ctx: any;
+
   constructor(ctx?: any, keys?: any);
 
   /**
