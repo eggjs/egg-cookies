@@ -1,4 +1,9 @@
 
+2.2.5 / 2018-09-07
+==================
+
+  * chore(typings): Remove 'ctx' in EggCookie's declaration and add a missing unit test (#15)
+
 2.2.4 / 2018-09-06
 ==================
 
