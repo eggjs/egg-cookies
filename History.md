@@ -1,4 +1,10 @@
 
+2.2.7 / 2019-04-28
+==================
+
+**fixes**
+  * [[`64e93e9`](http://github.com/eggjs/egg-cookies/commit/64e93e919558ee96e29de5c49d7132595e96b9b5)] - fix: empty cookie value should ignore maxAge (#17) (fengmk2 <<fengmk2@gmail.com>>)
+
 2.2.6 / 2018-09-07
 ==================
 
