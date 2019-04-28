@@ -153,6 +153,13 @@ describe('test/lib/cookies.test.js', () => {
     assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/foo=; path=\/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httponly/));
   });
 
+  it('should remove cookie ok event it set maxAge', () => {
+    const cookies = Cookies();
+    cookies.set('foo', null, { signed: true, maxAge: 1200 });
+    assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/foo=; path=\/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httponly/));
+    assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/foo\.sig=; path=\/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httponly/));
+  });
+
   it('should add secure when ctx.secure = true', () => {
     const cookies = Cookies({}, { secure: true });
     cookies.set('foo', 'bar');

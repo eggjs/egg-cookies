@@ -18,7 +18,7 @@
     "beautify-benchmark": "^0.2.4",
     "benchmark": "^2.1.4",
     "cookies": "^0.7.1",
-    "egg-bin": "^1",
+    "egg-bin": "1",
     "egg-ci": "^1.1.0",
     "eslint": "^3.10.2",
     "eslint-config-egg": "^3.2.0",
@@ -35,7 +35,7 @@
   "scripts": {
     "test": "npm run lint -- --fix && egg-bin test",
     "cov": "egg-bin cov",
-    "lint": "eslint .",
+    "lint": "eslint lib benchmark test *.js",
     "ci": "npm run lint && egg-bin pkgfiles --check && npm run cov",
     "autod": "autod"
   },
@@ -43,6 +43,6 @@
     "node": ">= 4.0.0"
   },
   "ci": {
-    "version": "4, 6, 8, 10"
+    "version": "4, 6, 8, 10, 12"
   }
 }
