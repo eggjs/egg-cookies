@@ -1,3 +1,6 @@
 node_modules
 coverage
 test/ts/report
+.idea
+test/fixtures/**/run
+test/fixtures/**/logs
