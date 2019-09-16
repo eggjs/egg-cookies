@@ -32,6 +32,7 @@
   },
   "homepage": "https://github.com/eggjs/egg-cookies",
   "author": "fengmk2 <fengmk2@gmail.com> (https://fengmk2.com)",
+  "license": "MIT",
   "scripts": {
     "test": "npm run lint -- --fix && egg-bin test",
     "cov": "egg-bin cov",
