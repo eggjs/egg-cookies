@@ -79,7 +79,7 @@ declare class EggCookies {
    * @param opts Optional. The options for cookie's setting.
    * @returns The current 'EggCookie' instance.
    */
-  set(name: string, value?: string, opts?: EggCookies.CookieSetOptions): this;
+  set(name: string, value?: string | null, opts?: EggCookies.CookieSetOptions): this;
 }
 
 export = EggCookies;
