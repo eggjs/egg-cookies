@@ -1,4 +1,14 @@
 
+2.3.0 / 2019-12-06
+==================
+
+**features**
+  * [[`d5e3d21`](http://github.com/eggjs/egg-cookies/commit/d5e3d215b1c51f70d932dba391d7da228a302312)] - feat: support SameSite=None (#18) (ziyunfei <<446240525@qq.com>>)
+  * [[`4dd74d2`](http://github.com/eggjs/egg-cookies/commit/4dd74d2078b5aea11f11b3b40605b702ca9ccd60)] - feat: allow set default cookie options on top level (#22) (fengmk2 <<fengmk2@gmail.com>>)
+
+**others**
+  * [[`57a005f`](http://github.com/eggjs/egg-cookies/commit/57a005fd501dad5fdadc25ea94db5474fbd6ca8c)] - chore: add license decoration (#20) (刘放 <<brizer@users.noreply.github.com>>)
+
 2.2.7 / 2019-04-28
 ==================
 
