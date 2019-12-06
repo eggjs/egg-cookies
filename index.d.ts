@@ -32,7 +32,7 @@ declare namespace EggCookies {
     /**
      * Is the same site
      */
-    sameSite?: boolean;
+    sameSite?: boolean | string;
     /**
      * Encrypt the cookie's value or not
      */
