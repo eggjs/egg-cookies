@@ -193,7 +193,7 @@ describe('test/lib/cookies.test.js', () => {
 
   it('should emit cookieLimitExceed event in app when value\'s length exceed the limit', done => {
     const cookies = Cookies();
-    const value = new Buffer(4094).fill(49).toString();
+    const value = Buffer.alloc(4094).fill(49).toString();
     cookies.app.on('cookieLimitExceed', params => {
       assert(params.name === 'foo');
       assert(params.value === value);
@@ -217,5 +217,20 @@ describe('test/lib/cookies.test.js', () => {
     assert(opts.signed === 1);
     assert(opts.secure === undefined);
     assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/foo=hello/));
+  });
+
+  it('should defaultCookieOptions with sameSite=lax', () => {
+    const cookies = Cookies({ secure: true }, null, { sameSite: 'lax' });
+    const opts = {
+      signed: 1,
+    };
+    cookies.set('foo', 'hello', opts);
+
+    assert(opts.signed === 1);
+    assert(opts.secure === undefined);
+    assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/foo=hello/));
+    for (const str of cookies.ctx.response.headers['set-cookie']) {
+      assert(str.includes('; path=/; samesite=lax; httponly'));
+    }
   });
 });

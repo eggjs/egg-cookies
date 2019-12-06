@@ -3,7 +3,7 @@
 const Cookies = require('..');
 const EventEmitter = require('events');
 
-module.exports = (req, options) => {
+module.exports = (req, options, defaultCookieOptions) => {
   options = options || {};
   let keys = options.keys;
   keys = keys === undefined ? [ 'key', 'keys' ] : keys;
@@ -29,5 +29,5 @@ module.exports = (req, options) => {
   ctx.get = ctx.request.get.bind(ctx.request);
   ctx.set = ctx.response.set.bind(ctx.response);
 
-  return new Cookies(ctx, keys);
+  return new Cookies(ctx, keys, defaultCookieOptions);
 };

@@ -23,7 +23,7 @@
 为 egg 提供 cookie 操作的封装。
 
 ```js
-ctx.cookies = new Cookies(ctx, keys);
+ctx.cookies = new Cookies(ctx, keys[, defaultCookieOptions]);
 ctx.cookies.get('key', 'value', options);
 ctx.cookies.set('key', 'value', options);
 ```
