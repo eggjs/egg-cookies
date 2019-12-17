@@ -233,4 +233,64 @@ describe('test/lib/cookies.test.js', () => {
       assert(str.includes('; path=/; samesite=lax; httponly'));
     }
   });
+
+  it('should not send SameSite=None property on incompatible clients', () => {
+    const cookies = Cookies({
+      secure: true,
+      headers: {
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3165.0 Safari/537.36',
+      },
+    }, null, { sameSite: 'None' });
+    const opts = {
+      signed: 1,
+    };
+    cookies.set('foo', 'hello', opts);
+
+    assert(opts.signed === 1);
+    assert(opts.secure === undefined);
+    assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/foo=hello/));
+    for (const str of cookies.ctx.response.headers['set-cookie']) {
+      assert(str.includes('; path=/; httponly'));
+    }
+  });
+
+  it('should send SameSite=None property on compatible clients', () => {
+    const cookies = Cookies({
+      secure: true,
+      headers: {
+        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.29 Safari/537.36',
+      },
+    }, null, { sameSite: 'None' });
+    const opts = {
+      signed: 1,
+    };
+    cookies.set('foo', 'hello', opts);
+
+    assert(opts.signed === 1);
+    assert(opts.secure === undefined);
+    assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/foo=hello/));
+    for (const str of cookies.ctx.response.headers['set-cookie']) {
+      assert(str.includes('; path=/; samesite=none; httponly'));
+    }
+  });
+
+  it('should send SameSite=none property on compatible clients', () => {
+    const cookies = Cookies({
+      secure: true,
+      headers: {
+        'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_0 like Mac OS X) AppleWebKit/602.1.38 (KHTML, like Gecko) Version/66.6 Mobile/14A5297c Safari/602.1',
+      },
+    }, null, { sameSite: 'none' });
+    const opts = {
+      signed: 1,
+    };
+    cookies.set('foo', 'hello', opts);
+
+    assert(opts.signed === 1);
+    assert(opts.secure === undefined);
+    assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/foo=hello/));
+    for (const str of cookies.ctx.response.headers['set-cookie']) {
+      assert(str.includes('; path=/; samesite=none; httponly'));
+    }
+  });
 });
