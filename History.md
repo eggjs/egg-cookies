@@ -1,4 +1,10 @@
 
+2.3.1 / 2019-12-17
+==================
+
+**fixes**
+  * [[`d4f443a`](http://github.com/eggjs/egg-cookies/commit/d4f443a5bf3bfd0ba7bc726b1e8b74a35ba265d6)] - fix: don't set samesite=none on incompatible clients (#23) (fengmk2 <<fengmk2@gmail.com>>)
+
 2.3.0 / 2019-12-06
 ==================
 
