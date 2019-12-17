@@ -235,22 +235,32 @@ describe('test/lib/cookies.test.js', () => {
   });
 
   it('should not send SameSite=None property on incompatible clients', () => {
-    const cookies = Cookies({
-      secure: true,
-      headers: {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3165.0 Safari/537.36',
-      },
-    }, null, { sameSite: 'None' });
-    const opts = {
-      signed: 1,
-    };
-    cookies.set('foo', 'hello', opts);
+    const userAgents = [
+      'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML%2C like Gecko) Chrome/64.0.3282.140 Safari/537.36',
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3165.0 Safari/537.36',
+      'Mozilla/5.0 (Linux; U; Android 8.1.0; zh-CN; OE106 Build/OPM1.171019.026) AppleWebKit/537.36 (KHTML%2C like Gecko) Version/4.0 Chrome/57.0.2987.108 UCBrowser/11.9.4.974 UWS/2.13.2.90 Mobile Safari/537.36 AliApp(DingTalk/4.7.18) com.alibaba.android.rimet/12362010 Channel/1565683214685 language/zh-CN UT4Aplus/0.2.25',
+      'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML%2C like Gecko) Chrome/63.0.3239.132 Safari/537.36 dingtalk-win/1.0.0 nw(0.14.7) DingTalk(4.7.19-Release.16) Mojo/1.0.0 Native AppType(release)',
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML%2C like Gecko) Chrome/62.0.3202.94 Safari/537.36',
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML%2C like Gecko) Chrome/52.0.2723.2 Safari/537.36',
+    ];
+    for (const ua of userAgents) {
+      const cookies = Cookies({
+        secure: true,
+        headers: {
+          'user-agent': ua,
+        },
+      }, null, { sameSite: 'None' });
+      const opts = {
+        signed: 1,
+      };
+      cookies.set('foo', 'hello', opts);
 
-    assert(opts.signed === 1);
-    assert(opts.secure === undefined);
-    assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/foo=hello/));
-    for (const str of cookies.ctx.response.headers['set-cookie']) {
-      assert(str.includes('; path=/; httponly'));
+      assert(opts.signed === 1);
+      assert(opts.secure === undefined);
+      assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/foo=hello/));
+      for (const str of cookies.ctx.response.headers['set-cookie']) {
+        assert(str.includes('; path=/; httponly'));
+      }
     }
   });
 
