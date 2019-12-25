@@ -28,6 +28,13 @@ egg-cookies provide an alternative `encrypt` mode like `signed`. An encrypt cook
 
 ```js
 const Cookies = require('egg-cookies');
+const key = new Keygrip([
+    'myoldversionkeys2',
+    'myoldversionkeys1',
+    { 
+        key: '12345678900987654321123456789009', 
+        iv: '1234567890098765' 
+    }]);
 const cookies = new Cookies(ctx, keys[, defaultCookieOptions]);
 
 cookies.set('foo', 'bar', { encrypt: true });
