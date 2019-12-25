@@ -3,6 +3,7 @@
 const Cookies = require('..');
 const EventEmitter = require('events');
 
+
 module.exports = (req, options, defaultCookieOptions) => {
   options = options || {};
   let keys = options.keys;
