@@ -1,4 +1,10 @@
 
+2.3.2 / 2020-02-19
+==================
+
+**fixes**
+  * [[`c6e1e74`](http://github.com/eggjs/egg-cookies/commit/c6e1e74e77c53f68e79f0ebd799c755db470badd)] - fix: don't send SameSite=None on Chromium/Chrome < 80.x (#25) (fengmk2 <<fengmk2@gmail.com>>)
+
 2.3.1 / 2019-12-17
 ==================
 
