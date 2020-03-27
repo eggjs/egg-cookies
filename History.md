@@ -1,4 +1,10 @@
 
+2.3.3 / 2020-03-27
+==================
+
+**fixes**
+  * [[`b3f86c0`](http://github.com/eggjs/egg-cookies/commit/b3f86c01b19b790f8c06aca143a094ed4fa575bd)] - fix(SameSite): don't send SameSite=None on non-secure context (#26) (Eric Zhang <<hixyeric@gmail.com>>)
+
 2.3.2 / 2020-02-19
 ==================
 
