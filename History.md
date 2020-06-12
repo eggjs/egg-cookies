@@ -1,4 +1,10 @@
 
+2.3.4 / 2020-06-12
+==================
+
+**fixes**
+  * [[`a146191`](http://github.com/eggjs/egg-cookies/commit/a14619139f585da290d693e6dfcf3e29304bc337)] - fix(typings): value of set method should support null type (#21) (Jedmeng <<roy.urey@gmail.com>>)
+
 2.3.3 / 2020-03-27
 ==================
 
