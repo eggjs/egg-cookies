@@ -34,7 +34,7 @@ describe('test/lib/cookie.test.js', () => {
         domain: 'eggjs.org',
         path: '/',
         httpOnly: true,
-      }).toHeader().match(/^name=value; path=\/; expires=(.*?)GMT; domain=eggjs\.org; secure; httponly$/));
+      }).toHeader().match(/^name=value; path=\/; max-age=1; expires=(.*?)GMT; domain=eggjs\.org; secure; httponly$/));
     });
 
     it('donnot set path when set path to null', () => {
