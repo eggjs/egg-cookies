@@ -1,4 +1,10 @@
 
+2.4.0 / 2020-06-22
+==================
+
+**features**
+  * [[`4417dda`](http://github.com/eggjs/egg-cookies/commit/4417ddacecde2dff3792ca10e0bf05fc94a991ee)] - feat: Send `max-age` header as well as `expires` if it is set(#27) (Junyan <<yancoding@gmail.com>>)
+
 2.3.4 / 2020-06-12
 ==================
 
