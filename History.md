@@ -1,4 +1,10 @@
 
+2.4.2 / 2020-06-28
+==================
+
+**fixes**
+  * [[`a72fd0c`](http://github.com/eggjs/egg-cookies/commit/a72fd0cd9518ad8cfb3ad7c8ace1eb14097cea7e)] - fix: ignore maxAge = 0 (#29) (Yiyu He <<dead_horse@qq.com>>)
+
 2.4.1 / 2020-06-28
 ==================
 
