@@ -55,7 +55,6 @@ describe('test/lib/cookie.test.js', () => {
   describe('maxAge', () => {
     it('maxAge overwrite expires', () => {
       const expires = new Date('2020-01-01');
-      console.log(expires);
       let header = new Cookie('name', 'value', {
         secure: true,
         expires,
@@ -73,6 +72,18 @@ describe('test/lib/cookie.test.js', () => {
         httpOnly: true,
       }).toHeader();
       assert(!header.match(/expires=Wed, 01 Jan 2020 00:00:00 GMT/));
+    });
+
+    it('ignore maxage NaN', () => {
+      const header = new Cookie('name', 'value', {
+        secure: true,
+        maxAge: 'session',
+        domain: 'eggjs.org',
+        path: '/',
+        httpOnly: true,
+      }).toHeader();
+      assert(!header.includes('max-age'));
+      assert(!header.includes('expires'));
     });
   });
 

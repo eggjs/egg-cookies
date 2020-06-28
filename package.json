@@ -21,8 +21,8 @@
     "cookies": "^0.7.1",
     "egg-bin": "1",
     "egg-ci": "^1.1.0",
-    "eslint": "^3.10.2",
-    "eslint-config-egg": "^3.2.0",
+    "eslint": "^7.3.1",
+    "eslint-config-egg": "^8.0.1",
     "keygrip": "^1.0.2",
     "ts-node": "^7.0.1",
     "typescript": "^3.0.3"
@@ -37,7 +37,7 @@
   "scripts": {
     "test": "npm run lint -- --fix && egg-bin test",
     "cov": "egg-bin cov",
-    "lint": "eslint lib benchmark test *.js",
+    "lint": "eslint lib benchmark test",
     "ci": "npm run lint && egg-bin pkgfiles --check && npm run cov",
     "autod": "autod"
   },
@@ -45,6 +45,6 @@
     "node": ">= 4.0.0"
   },
   "ci": {
-    "version": "4, 6, 8, 10, 12, 13"
+    "version": "10, 12, 13"
   }
 }
