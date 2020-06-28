@@ -21,8 +21,8 @@
     "cookies": "^0.7.1",
     "egg-bin": "1",
     "egg-ci": "^1.1.0",
-    "eslint": "^3.10.2",
-    "eslint-config-egg": "^3.2.0",
+    "eslint": "^7.3.1",
+    "eslint-config-egg": "^8.0.1",
     "keygrip": "^1.0.2",
     "ts-node": "^7.0.1",
     "typescript": "^3.0.3"
