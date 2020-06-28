@@ -37,7 +37,7 @@
   "scripts": {
     "test": "npm run lint -- --fix && egg-bin test",
     "cov": "egg-bin cov",
-    "lint": "eslint lib benchmark test *.js",
+    "lint": "eslint lib benchmark test",
     "ci": "npm run lint && egg-bin pkgfiles --check && npm run cov",
     "autod": "autod"
   },
