@@ -90,7 +90,7 @@ describe('test/lib/cookie.test.js', () => {
       // In previous implementations, maxAge = 0 was considered unnecessary to set this header
       const header = new Cookie('name', 'value', {
         secure: true,
-        maxAge: 'session',
+        maxAge: 0,
         domain: 'eggjs.org',
         path: '/',
         httpOnly: true,
