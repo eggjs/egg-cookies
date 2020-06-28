@@ -85,6 +85,19 @@ describe('test/lib/cookie.test.js', () => {
       assert(!header.includes('max-age'));
       assert(!header.includes('expires'));
     });
+
+    it('ignore maxage 0', () => {
+      // In previous implementations, maxAge = 0 was considered unnecessary to set this header
+      const header = new Cookie('name', 'value', {
+        secure: true,
+        maxAge: 0,
+        domain: 'eggjs.org',
+        path: '/',
+        httpOnly: true,
+      }).toHeader();
+      assert(!header.includes('max-age'));
+      assert(!header.includes('expires'));
+    });
   });
 
   describe('sameSite', () => {
