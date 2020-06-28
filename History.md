@@ -1,4 +1,10 @@
 
+2.4.1 / 2020-06-28
+==================
+
+**fixes**
+  * [[`7a87cc1`](http://github.com/eggjs/egg-cookies/commit/7a87cc16108bc5b542c0fbe91c4e4a6e986573de)] - fix: ignore invalid maxage (#28) (Yiyu He <<dead_horse@qq.com>>)
+
 2.4.0 / 2020-06-22
 ==================
 
