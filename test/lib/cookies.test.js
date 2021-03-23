@@ -165,6 +165,15 @@ describe('test/lib/cookies.test.js', () => {
     cookies.set('foo', 'bar');
     assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/secure;/));
   });
+  it('should add secure when referer is https protocl and set ctx.secure = true ', () => {
+    const cookies = Cookies({
+      headers: {
+        referer: 'https://a.com',
+      },
+    }, { secure: false });
+    cookies.set('foo', 'bar');
+    assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/secure;/));
+  });
 
   it('should not add secure when ctx.secure = true but opt.secure = false', () => {
     const cookies = Cookies({}, { secure: true });
