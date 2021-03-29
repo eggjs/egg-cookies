@@ -58,6 +58,8 @@ declare namespace EggCookies {
      */
     signed?: boolean;
   }
+
+  class CookieError extends Error { }
 }
 
 declare class EggCookies {
