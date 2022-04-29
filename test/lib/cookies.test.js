@@ -122,6 +122,9 @@ describe('test/lib/cookies.test.js', () => {
     }, { keys: [ 'hi', 'hello' ] });
 
     assert(newCookies.get('foo', { signed: true }) === 'bar');
+    // call twice but should only update once
+    newCookies.get('foo', { signed: true });
+    assert(newCookies.ctx.response.headers['set-cookie'].length === 1);
     const newSign = newCookies.keys.sign('foo=bar');
     assert(newCookies.ctx.response.headers['set-cookie'][0].startsWith(`foo.sig=${newSign}`));
   });
