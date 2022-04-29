@@ -1,4 +1,10 @@
 
+2.4.3 / 2022-04-29
+==================
+
+**fixes**
+  * [[`c8c42d3`](http://github.com/eggjs/egg-cookies/commit/c8c42d30b41f7c3f6c2e9231364e4acf47cea221)] - fix: should only update .sig once (#32) (TZ | 天猪 <<atian25@qq.com>>)
+
 2.4.2 / 2020-06-28
 ==================
 
