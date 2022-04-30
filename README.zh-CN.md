@@ -1,7 +1,7 @@
 # egg-cookies
 
 [![NPM version][npm-image]][npm-url]
-[![build status][travis-image]][travis-url]
+[![build status][ci-image]][ci-url]
 [![Test coverage][codecov-image]][codecov-url]
 [![David deps][david-image]][david-url]
 [![Known Vulnerabilities][snyk-image]][snyk-url]
@@ -9,8 +9,8 @@
 
 [npm-image]: https://img.shields.io/npm/v/egg-cookies.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/egg-cookies
-[travis-image]: https://img.shields.io/travis/eggjs/egg-cookies.svg?style=flat-square
-[travis-url]: https://travis-ci.org/eggjs/egg-cookies
+[ci-image]: https://github.com/eggjs/egg-cookies/actions/workflows/nodejs.yml/badge.svg
+[ci-url]: https://github.com/eggjs/egg-cookies/actions/workflows/nodejs.yml
 [codecov-image]: https://codecov.io/gh/eggjs/egg-cookies/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/eggjs/egg-cookies
 [david-image]: https://img.shields.io/david/eggjs/egg-cookies.svg?style=flat-square
