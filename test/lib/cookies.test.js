@@ -2,6 +2,7 @@
 
 const Cookies = require('../cookies');
 const assert = require('assert');
+const CookieError = require('../../lib/error');
 
 describe('test/lib/cookies.test.js', () => {
   it('should encrypt error when keys not present', () => {
@@ -181,6 +182,7 @@ describe('test/lib/cookies.test.js', () => {
       cookies.set('foo', 'bar', { secure: true });
       throw new Error('should not exec');
     } catch (err) {
+      assert(err instanceof CookieError);
       assert(err.message === 'Cannot send secure cookie over unencrypted connection');
     }
   });
