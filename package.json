@@ -23,6 +23,7 @@
     "egg-ci": "^1.1.0",
     "eslint": "^7.3.1",
     "eslint-config-egg": "^8.0.1",
+    "git-contributor": "^1.1.0",
     "keygrip": "^1.0.2",
     "ts-node": "^7.0.1",
     "typescript": "^3.0.3"
@@ -32,9 +33,10 @@
     "url": "https://github.com/eggjs/egg-cookies.git"
   },
   "homepage": "https://github.com/eggjs/egg-cookies",
-  "author": "fengmk2 <fengmk2@gmail.com> (https://fengmk2.com)",
+  "author": "fengmk2 <fengmk2@gmail.com> (https://github.com/fengmk2)",
   "license": "MIT",
   "scripts": {
+    "contributor": "git-contributor",
     "test": "npm run lint -- --fix && egg-bin test",
     "cov": "egg-bin cov",
     "lint": "eslint lib benchmark test",
@@ -42,9 +44,13 @@
     "autod": "autod"
   },
   "engines": {
-    "node": ">= 4.0.0"
+    "node": ">= 10.0.0"
   },
   "ci": {
-    "version": "10, 12, 13"
+    "version": "10, 12, 14, 16, 18",
+    "type": "github",
+    "os": {
+      "github": "linux"
+    }
   }
 }
