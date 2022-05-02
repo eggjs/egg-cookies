@@ -3,8 +3,6 @@
 [![NPM version][npm-image]][npm-url]
 [![build status][ci-image]][ci-url]
 [![Test coverage][codecov-image]][codecov-url]
-[![David deps][david-image]][david-url]
-[![Known Vulnerabilities][snyk-image]][snyk-url]
 [![npm download][download-image]][download-url]
 
 [npm-image]: https://img.shields.io/npm/v/egg-cookies.svg?style=flat-square
@@ -13,10 +11,6 @@
 [ci-url]: https://github.com/eggjs/egg-cookies/actions/workflows/nodejs.yml
 [codecov-image]: https://codecov.io/gh/eggjs/egg-cookies/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/eggjs/egg-cookies
-[david-image]: https://img.shields.io/david/eggjs/egg-cookies.svg?style=flat-square
-[david-url]: https://david-dm.org/eggjs/egg-cookies
-[snyk-image]: https://snyk.io/test/npm/egg-cookies/badge.svg?style=flat-square
-[snyk-url]: https://snyk.io/test/npm/egg-cookies
 [download-image]: https://img.shields.io/npm/dm/egg-cookies.svg?style=flat-square
 [download-url]: https://npmjs.org/package/egg-cookies
 
@@ -54,3 +48,14 @@ cookies.set('foo', longText);
 ## License
 
 [MIT](LICENSE.txt)
+<!-- GITCONTRIBUTOR_START -->
+
+## Contributors
+
+|[<img src="https://avatars.githubusercontent.com/u/985607?v=4" width="100px;"/><br/><sub><b>dead-horse</b></sub>](https://github.com/dead-horse)<br/>|[<img src="https://avatars.githubusercontent.com/u/156269?v=4" width="100px;"/><br/><sub><b>fengmk2</b></sub>](https://github.com/fengmk2)<br/>|[<img src="https://avatars.githubusercontent.com/u/227713?v=4" width="100px;"/><br/><sub><b>atian25</b></sub>](https://github.com/atian25)<br/>|[<img src="https://avatars.githubusercontent.com/u/5102113?v=4" width="100px;"/><br/><sub><b>xyeric</b></sub>](https://github.com/xyeric)<br/>|[<img src="https://avatars.githubusercontent.com/u/3939959?v=4" width="100px;"/><br/><sub><b>jedmeng</b></sub>](https://github.com/jedmeng)<br/>|[<img src="https://avatars.githubusercontent.com/u/17005098?v=4" width="100px;"/><br/><sub><b>Junyan</b></sub>](https://github.com/Junyan)<br/>|
+| :---: | :---: | :---: | :---: | :---: | :---: |
+[<img src="https://avatars.githubusercontent.com/u/12657964?v=4" width="100px;"/><br/><sub><b>beliefgp</b></sub>](https://github.com/beliefgp)<br/>|[<img src="https://avatars.githubusercontent.com/u/52845048?v=4" width="100px;"/><br/><sub><b>snapre</b></sub>](https://github.com/snapre)<br/>|[<img src="https://avatars.githubusercontent.com/u/360661?v=4" width="100px;"/><br/><sub><b>popomore</b></sub>](https://github.com/popomore)<br/>|[<img src="https://avatars.githubusercontent.com/u/5856440?v=4" width="100px;"/><br/><sub><b>whxaxes</b></sub>](https://github.com/whxaxes)<br/>|[<img src="https://avatars.githubusercontent.com/u/1276859?v=4" width="100px;"/><br/><sub><b>ziyunfei</b></sub>](https://github.com/ziyunfei)<br/>|[<img src="https://avatars.githubusercontent.com/u/12656301?v=4" width="100px;"/><br/><sub><b>brizer</b></sub>](https://github.com/brizer)<br/>
+
+This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto updated at `Mon May 02 2022 21:03:15 GMT+0800`.
+
+<!-- GITCONTRIBUTOR_END -->
