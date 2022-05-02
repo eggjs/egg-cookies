@@ -1,4 +1,15 @@
 
+2.5.0 / 2022-05-02
+==================
+
+**features**
+  * [[`7377d3b`](http://github.com/eggjs/egg-cookies/commit/7377d3b0a9ee6d137bc07f4742aa499e9ed47d8d)] - feat: add CookieError (#31) (图南 <<xzj15859722542@hotmail.com>>)
+
+**others**
+  * [[`d27be06`](http://github.com/eggjs/egg-cookies/commit/d27be0659889d12af245149b633e7274790a01c4)] - 🤖 TEST: Run on node 18 (#34) (fengmk2 <<fengmk2@gmail.com>>)
+  * [[`9e770ee`](http://github.com/eggjs/egg-cookies/commit/9e770ee61a9e6f1ce9b19e8e028f9847c386f3a0)] - Create codeql-analysis.yml (fengmk2 <<fengmk2@gmail.com>>)
+  * [[`eff0195`](http://github.com/eggjs/egg-cookies/commit/eff01956de00a95fab8a3367ade61b5b8a55b76d)] - chore: update build status badge (#33) (XiaoRui <<xiangwu619@gmail.com>>)
+
 2.4.3 / 2022-04-29
 ==================
 
