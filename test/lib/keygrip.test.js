@@ -2,6 +2,7 @@
 
 const Keygrip = require('../../lib/keygrip');
 const assert = require('assert');
+const crypto = require('crypto');
 
 describe('test/lib/keygrip.test.js', () => {
   it('should throw without keys', () => {
@@ -29,6 +30,18 @@ describe('test/lib/keygrip.test.js', () => {
     assert(keygrip.decrypt(encrypted).value.toString() === 'hello');
     assert(keygrip.decrypt(encrypted).index === 0);
     assert(newKeygrip.decrypt(encrypted) === false);
+  });
+
+  it('should decrypt key encrypted by createCipher without error', () => {
+    const keygrip = new Keygrip([ 'foo' ]);
+    const encrypted = keygrip.encrypt('hello');
+
+    const cipher = crypto.createCipher(keygrip.cipher, 'foo');
+    const text = cipher.update('hello', 'utf8');
+    const oldEncrypted = Buffer.concat([ text, cipher.final() ]);
+
+    assert(encrypted.toString('hex') === oldEncrypted.toString('hex'));
+    assert(keygrip.decrypt(oldEncrypted).value.toString('utf-8') === 'hello');
   });
 
   it('should signed and verify success', () => {
