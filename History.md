@@ -1,4 +1,10 @@
 
+2.6.1 / 2022-06-20
+==================
+
+**others**
+  * [[`ebe330e`](http://github.com/eggjs/egg-cookies/commit/ebe330ea461be73e65dd1e2bbd4c9e3eba5e8d89)] - 🐛 FIX: Avoid ReDoS (#36) (fengmk2 <<fengmk2@gmail.com>>)
+
 2.6.0 / 2022-06-20
 ==================
 
