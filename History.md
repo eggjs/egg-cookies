@@ -1,4 +1,10 @@
 
+2.6.0 / 2022-06-20
+==================
+
+**features**
+  * [[`7ed0ded`](http://github.com/eggjs/egg-cookies/commit/7ed0ded5492ebd7a2001407c9a9af638dcfd5307)] - feat: deprecated crypto api (#35) (吖猩 <<whxaxes@gmail.com>>)
+
 2.5.0 / 2022-05-02
 ==================
 
