@@ -20,7 +20,6 @@
     "benchmark": "^2.1.4",
     "cookies": "^0.7.1",
     "egg-bin": "1",
-    "egg-ci": "^1.1.0",
     "eslint": "^7.3.1",
     "eslint-config-egg": "^8.0.1",
     "git-contributor": "^1.1.0",
@@ -40,17 +39,9 @@
     "test": "npm run lint -- --fix && egg-bin test",
     "cov": "egg-bin cov",
     "lint": "eslint lib benchmark test",
-    "ci": "npm run lint && egg-bin pkgfiles --check && npm run cov",
-    "autod": "autod"
+    "ci": "npm run lint && npm run cov"
   },
   "engines": {
     "node": ">= 10.0.0"
-  },
-  "ci": {
-    "version": "10, 12, 14, 16, 18",
-    "type": "github",
-    "os": {
-      "github": "linux"
-    }
   }
 }
