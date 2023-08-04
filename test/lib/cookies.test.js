@@ -67,12 +67,10 @@ describe('test/lib/cookies.test.js', () => {
   });
 
   it('should work with domain ok, when domain is a function', () => {
-    const cookies = Cookies({
-      host: 'foo.com',
-    }, {
+    const cookies = Cookies({}, {
       secure: true,
     });
-    cookies.set('foo', 'bar', { encrypt: true, domain: ctx => ctx.request.host });
+    cookies.set('foo', 'bar', { encrypt: true, domain: () => 'foo.com' });
     const cookie = cookies.ctx.response.headers['set-cookie'][0];
     assert(cookie.indexOf('domain=foo.com') > 0);
   });
