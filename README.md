@@ -47,7 +47,7 @@ cookies.set('foo', longText);
 
 ## License
 
-[MIT](LICENSE.txt)
+[MIT](LICENSE)
 <!-- GITCONTRIBUTOR_START -->
 
 ## Contributors

@@ -40,14 +40,14 @@ ctx.cookies.set('key', 'value', options);
 - httpOnly - `Boolean` 如果设置为 ture，则浏览器中不允许读取这个 cookie 的值。
 - overwrite - `Boolean` 如果设置为 true，在一个请求上重复写入同一个 key 将覆盖前一次写入的值，默认为 false。
 - signed - `Boolean` 是否需要对 cookie 进行签名，需要配合 get 时传递 signed 参数，此时前端无法篡改这个 cookie，默认为 true。
-- encrypt - `Boolean` 是否需要对 cookie 进行加密，需要配合 get 时传递 encrypt 参数，此时前端无法读到真实的 cookie 值，默认为 false。
+- encrypt - `Boolean` 是否需要对 cookie 进行加密，需要配合 get 时传递 encrypt 参数，此时前端无法读到真实的 cookie 值，默认为 false。
 
 ## 读取 cookie
 
 通过 `cookies.get(key, value, options)` 的方式来读取一个 cookie。其中 options 支持的参数有：
 
 - signed - `Boolean` 是否需要对 cookie 进行验签，需要配合 set 时传递 signed 参数，此时前端无法篡改这个 cookie，默认为 true。
-- encrypt - `Boolean` 是否需要对 cookie 进行解密，需要配合 set 时传递 encrypt 参数，此时前端无法读到真实的 cookie 值，默认为 false。
+- encrypt - `Boolean` 是否需要对 cookie 进行解密，需要配合 set 时传递 encrypt 参数，此时前端无法读到真实的 cookie 值，默认为 false。
 
 ## 删除 cookie
 
@@ -55,7 +55,7 @@ ctx.cookies.set('key', 'value', options);
 
 ## License
 
-[MIT](LICENSE.txt)
+[MIT](LICENSE)
 <!-- GITCONTRIBUTOR_START -->
 
 ## Contributors
