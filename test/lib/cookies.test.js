@@ -75,6 +75,24 @@ describe('test/lib/cookies.test.js', () => {
     assert(cookie.indexOf('domain=foo.com') > 0);
   });
 
+  it('should work with domain is empty string', () => {
+    const cookies = Cookies({}, {
+      secure: true,
+    });
+    cookies.set('foo', 'bar', { encrypt: true, domain: '' });
+    const cookie = cookies.ctx.response.headers['set-cookie'][0];
+    assert.equal(cookie, 'foo=SBfi5dnMSwNmMdeydI_zdw==; path=/; secure; httponly');
+  });
+
+  it('should work with domain is string', () => {
+    const cookies = Cookies({}, {
+      secure: true,
+    });
+    cookies.set('foo', 'bar', { encrypt: true, domain: 'foo.com' });
+    const cookie = cookies.ctx.response.headers['set-cookie'][0];
+    assert(cookie.indexOf('domain=foo.com') > 0);
+  });
+
   it('should signed work fine', () => {
     const cookies = Cookies();
     cookies.set('foo', 'bar', { signed: true });
