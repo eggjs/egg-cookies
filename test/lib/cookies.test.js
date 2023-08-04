@@ -66,6 +66,15 @@ describe('test/lib/cookies.test.js', () => {
     assert(cookie.indexOf('secure') > 0);
   });
 
+  it('should work with domain ok, when domain is a function', () => {
+    const cookies = Cookies({}, {
+      secure: true,
+    });
+    cookies.set('foo', 'bar', { encrypt: true, domain: () => 'foo.com' });
+    const cookie = cookies.ctx.response.headers['set-cookie'][0];
+    assert(cookie.indexOf('domain=foo.com') > 0);
+  });
+
   it('should signed work fine', () => {
     const cookies = Cookies();
     cookies.set('foo', 'bar', { signed: true });

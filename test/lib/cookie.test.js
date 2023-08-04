@@ -37,6 +37,16 @@ describe('test/lib/cookie.test.js', () => {
       }).toHeader().match(/^name=value; path=\/; max-age=1; expires=(.*?)GMT; domain=eggjs\.org; secure; httponly$/));
     });
 
+    it('set domain when domain is a function', () => {
+      assert(new Cookie('name', 'value', {
+        secure: true,
+        maxAge: 1000,
+        domain: () => 'eggjs.org',
+        path: '/',
+        httpOnly: true,
+      }).toHeader().match(/^name=value; path=\/; max-age=1; expires=(.*?)GMT; domain=eggjs\.org; secure; httponly$/));
+    });
+
     it('donnot set path when set path to null', () => {
       const header = new Cookie('name', 'value', {
         path: null,
