@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.0](https://github.com/eggjs/egg-cookies/compare/v2.7.1...v2.8.0) (2023-12-26)
+
+
+### Features
+
+* support set partitioned property on Chrome >= 114 ([#42](https://github.com/eggjs/egg-cookies/issues/42)) ([74325b8](https://github.com/eggjs/egg-cookies/commit/74325b89b150ce880dc742f63016f0494fff273a))
+
 ## [2.7.1](https://github.com/eggjs/egg-cookies/compare/v2.7.0...v2.7.1) (2023-08-04)
 
 
