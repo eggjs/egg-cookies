@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.1](https://github.com/eggjs/egg-cookies/compare/v2.8.0...v2.8.1) (2023-12-27)
+
+
+### Bug Fixes
+
+* add partitioned in index.d.ts ([#43](https://github.com/eggjs/egg-cookies/issues/43)) ([7e01eba](https://github.com/eggjs/egg-cookies/commit/7e01eba444f24bfea810a9b474ff54d182cb80c4))
+
 ## [2.8.0](https://github.com/eggjs/egg-cookies/compare/v2.7.1...v2.8.0) (2023-12-26)
 
 
