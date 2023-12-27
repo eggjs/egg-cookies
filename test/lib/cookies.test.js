@@ -531,8 +531,8 @@ describe('test/lib/cookies.test.js', () => {
       const headers = cookies.ctx.response.headers['set-cookie'];
       // console.log(headers);
       assert.equal(headers.length, 4);
-      assert.equal(headers[0], 'foo=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httponly');
-      assert.equal(headers[1], 'foo.sig=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httponly');
+      assert.equal(headers[0], 'foo=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; secure; httponly');
+      assert.equal(headers[1], 'foo.sig=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; secure; httponly');
       assert.equal(headers[2], 'foo=hello; path=/; secure; httponly; partitioned');
       assert.equal(headers[3], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; secure; httponly; partitioned');
     });
