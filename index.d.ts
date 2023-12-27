@@ -57,6 +57,10 @@ declare namespace EggCookies {
      * Is it signed or not.
      */
     signed?: boolean;
+    /**
+     * Is it partitioned or not.
+     */
+    partitioned?: boolean;
   }
 
   class CookieError extends Error { }
