@@ -38,6 +38,7 @@ ctx.cookies.set('key', 'value', options);
 - maxAge - `Number` cookie 的最大有效时间，如果设置了 maxAge，将会覆盖 expires 的值。
 - secure - `Boolean` 是否只在加密信道中传输，注意，如果请求为 http 时，不允许设置为 true https 时自动设置为 true。
 - partitioned - `Boolean` 是否设置独立分区状态（[CHIPS](https://developers.google.com/privacy-sandbox/3pcd/chips)）的 Cookie。注意，只有 `secure` 为 true 的时候此配置才会生效。
+- removeUnpartitioned - `Boolean` 是否删除非独立分区状态的同名 cookie。注意，只有 `partitioned` 为 true 的时候此配置才会生效。
 - httpOnly - `Boolean` 如果设置为 ture，则浏览器中不允许读取这个 cookie 的值。
 - overwrite - `Boolean` 如果设置为 true，在一个请求上重复写入同一个 key 将覆盖前一次写入的值，默认为 false。
 - signed - `Boolean` 是否需要对 cookie 进行签名，需要配合 get 时传递 signed 参数，此时前端无法篡改这个 cookie，默认为 true。

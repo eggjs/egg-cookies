@@ -513,5 +513,28 @@ describe('test/lib/cookies.test.js', () => {
         assert(str.includes('; path=/; httponly'));
       }
     });
+
+    it('should remove unpartitioned property first', () => {
+      const cookies = Cookies({
+        secure: true,
+        headers: {
+          'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.3945.29 Safari/537.36',
+        },
+      }, { secure: true }, { partitioned: true, removeUnpartitioned: true });
+      const opts = {
+        signed: 1,
+      };
+      cookies.set('foo', 'hello', opts);
+
+      assert(opts.signed === 1);
+      assert(opts.secure === undefined);
+      const headers = cookies.ctx.response.headers['set-cookie'];
+      // console.log(headers);
+      assert.equal(headers.length, 4);
+      assert.equal(headers[0], 'foo=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httponly');
+      assert.equal(headers[1], 'foo.sig=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httponly');
+      assert.equal(headers[2], 'foo=hello; path=/; secure; httponly; partitioned');
+      assert.equal(headers[3], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; secure; httponly; partitioned');
+    });
   });
 });
