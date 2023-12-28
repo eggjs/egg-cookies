@@ -436,7 +436,7 @@ describe('test/lib/cookies.test.js', () => {
         assert(opts.secure === undefined);
         assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/foo=hello/));
         for (const str of cookies.ctx.response.headers['set-cookie']) {
-          assert.match(str, /; path=\/; secure; httponly/);
+          assert(str.includes('; path=\/; secure; httponly'));
         }
       }
     });
