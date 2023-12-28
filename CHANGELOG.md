@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.2](https://github.com/eggjs/egg-cookies/compare/v2.8.1...v2.8.2) (2023-12-28)
+
+
+### Bug Fixes
+
+* support remove unpartitioned same name cookie first ([#44](https://github.com/eggjs/egg-cookies/issues/44)) ([b81f041](https://github.com/eggjs/egg-cookies/commit/b81f04181e461f2688296e4bd65cad8ac3a8298d))
+
 ## [2.8.1](https://github.com/eggjs/egg-cookies/compare/v2.8.0...v2.8.1) (2023-12-27)
 
 
