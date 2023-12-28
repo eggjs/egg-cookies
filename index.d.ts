@@ -61,6 +61,10 @@ declare namespace EggCookies {
      * Is it partitioned or not.
      */
     partitioned?: boolean;
+    /**
+     * Remove unpartitioned same name cookie or not.
+     */
+    removeUnpartitioned?: boolean;
   }
 
   class CookieError extends Error { }
