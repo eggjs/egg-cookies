@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.3](https://github.com/eggjs/egg-cookies/compare/v2.8.2...v2.8.3) (2023-12-28)
+
+
+### Bug Fixes
+
+* should not set sameSite and CHIPS when secure = false ([#45](https://github.com/eggjs/egg-cookies/issues/45)) ([33395bf](https://github.com/eggjs/egg-cookies/commit/33395bfda657fd31b0443dbf0d9cdb3bea697b1b))
+
 ## [2.8.2](https://github.com/eggjs/egg-cookies/compare/v2.8.1...v2.8.2) (2023-12-28)
 
 
