@@ -419,6 +419,7 @@ describe('test/lib/cookies.test.js', () => {
       const userAgents = [
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML%2C like Gecko) Chrome/62.0.3202.94 Safari/537.36',
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML%2C like Gecko) Chrome/52.0.2723.2 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/100.36 (KHTML, like Gecko) Safari/100.36',
       ];
       for (const ua of userAgents) {
         const cookies = Cookies({
@@ -436,7 +437,7 @@ describe('test/lib/cookies.test.js', () => {
         assert(opts.secure === undefined);
         assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/foo=hello/));
         for (const str of cookies.ctx.response.headers['set-cookie']) {
-          assert(str.includes('; path=\/; secure; httponly'));
+          assert(!str.includes('partitioned'));
         }
       }
     });
@@ -571,6 +572,28 @@ describe('test/lib/cookies.test.js', () => {
       assert.equal(headers[1], 'foo.sig=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=none; secure; httponly');
       assert.equal(headers[2], 'foo=hello; path=/; samesite=none; secure; httponly; partitioned');
       assert.equal(headers[3], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; samesite=none; secure; httponly; partitioned');
+    });
+
+    it('should remove unpartitioned property first when opts.secure = true and signed = false', () => {
+      const cookies = Cookies({
+        secure: true,
+        headers: {
+          'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
+        },
+      }, { secure: true }, { partitioned: true, removeUnpartitioned: true, sameSite: 'None' });
+      const opts = {
+        secure: true,
+        signed: false,
+      };
+      cookies.set('foo', 'hello', opts);
+
+      assert(opts.signed === false);
+      assert(opts.secure === true);
+      const headers = cookies.ctx.response.headers['set-cookie'];
+      // console.log(headers);
+      assert.equal(headers.length, 2);
+      assert.equal(headers[0], 'foo=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=none; secure; httponly');
+      assert.equal(headers[1], 'foo=hello; path=/; samesite=none; secure; httponly; partitioned');
     });
 
     it('should remove unpartitioned property first with overwrite = true', () => {
