@@ -5,6 +5,13 @@
  * `import {CookieGetOptions, CookieSetOptions} from 'egg-cookies'`.
  */
 declare namespace EggCookies {
+  interface DefaultCookieOptions {
+    /**
+     * Auto get and set `__Host` prefix cookie to adaptation CHIPS mode (The default value is false).
+     */
+    autoChips?: boolean;
+  }
+
   interface CookieGetOptions {
     /**
      * Whether to sign or not (The default value is true).
@@ -72,7 +79,7 @@ declare namespace EggCookies {
 
 declare class EggCookies {
 
-  constructor(ctx?: any, keys?: any);
+  constructor(ctx?: any, keys?: any, opts?: EggCookies.DefaultCookieOptions);
 
   /**
    * Get the Egg's cookies by name with optional options.
