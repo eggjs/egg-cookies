@@ -723,8 +723,8 @@ describe('test/lib/cookies.test.js', () => {
       assert(opts.secure === undefined);
       let setCookies = cookies.ctx.response.headers['set-cookie'];
       assert.equal(setCookies.length, 4);
-      assert.equal(setCookies[0], '__Host-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
-      assert.equal(setCookies[1], '__Host-foo.sig=l0yCZaMfgLfAX4tuQ6mI4Hh3RBoeeWHrVHqNLlYx480; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(setCookies[0], '_CHIPS-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(setCookies[1], '_CHIPS-foo.sig=G4Idm9Wdp_vfCnUbOpQG284o22SgTe88SUmG6QW1ylk; path=/; samesite=none; secure; httponly; partitioned');
       assert.equal(setCookies[2], 'foo=hello; path=/; samesite=none; secure; httponly');
       assert.equal(setCookies[3], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; samesite=none; secure; httponly');
 
@@ -739,8 +739,8 @@ describe('test/lib/cookies.test.js', () => {
       assert(opts.signed === 1);
       assert(opts.secure === undefined);
       setCookies = cookies.ctx.response.headers['set-cookie'];
-      assert.equal(setCookies[0], '__Host-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
-      assert.equal(setCookies[1], '__Host-foo.sig=l0yCZaMfgLfAX4tuQ6mI4Hh3RBoeeWHrVHqNLlYx480; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(setCookies[0], '_CHIPS-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(setCookies[1], '_CHIPS-foo.sig=G4Idm9Wdp_vfCnUbOpQG284o22SgTe88SUmG6QW1ylk; path=/; samesite=none; secure; httponly; partitioned');
       assert.equal(setCookies[2], 'foo=hello; path=/; samesite=none; secure; httponly');
       assert.equal(setCookies[3], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; samesite=none; secure; httponly');
 
@@ -756,8 +756,8 @@ describe('test/lib/cookies.test.js', () => {
       assert(opts.signed === 1);
       assert(opts.secure === undefined);
       setCookies = cookies.ctx.response.headers['set-cookie'];
-      assert.equal(setCookies[0], '__Host-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
-      assert.equal(setCookies[1], '__Host-foo.sig=l0yCZaMfgLfAX4tuQ6mI4Hh3RBoeeWHrVHqNLlYx480; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(setCookies[0], '_CHIPS-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(setCookies[1], '_CHIPS-foo.sig=G4Idm9Wdp_vfCnUbOpQG284o22SgTe88SUmG6QW1ylk; path=/; samesite=none; secure; httponly; partitioned');
       assert.equal(setCookies[2], 'foo=hello; path=/; samesite=none; secure; httponly');
       assert.equal(setCookies[3], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; samesite=none; secure; httponly');
 
@@ -776,8 +776,8 @@ describe('test/lib/cookies.test.js', () => {
       assert(opts.signed === 1);
       assert(opts.secure === undefined);
       setCookies = cookies.ctx.response.headers['set-cookie'];
-      assert.equal(setCookies[0], '__Host-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
-      assert.equal(setCookies[1], '__Host-foo.sig=l0yCZaMfgLfAX4tuQ6mI4Hh3RBoeeWHrVHqNLlYx480; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(setCookies[0], '_CHIPS-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(setCookies[1], '_CHIPS-foo.sig=G4Idm9Wdp_vfCnUbOpQG284o22SgTe88SUmG6QW1ylk; path=/; samesite=none; secure; httponly; partitioned');
       assert.equal(setCookies[2], 'foo=hello; path=/; samesite=none; secure; httponly');
       assert.equal(setCookies[3], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; samesite=none; secure; httponly');
 
@@ -785,15 +785,15 @@ describe('test/lib/cookies.test.js', () => {
       cookies = Cookies({
         secure: true,
         headers: {
-          cookie: '__Host-foo=hello; __Host-foo.sig=l0yCZaMfgLfAX4tuQ6mI4Hh3RBoeeWHrVHqNLlYx480; foo=hello; foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI',
+          cookie: '_CHIPS-foo=hello; _CHIPS-foo.sig=G4Idm9Wdp_vfCnUbOpQG284o22SgTe88SUmG6QW1ylk; foo=hello; foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI',
         },
       }, { secure: true }, { autoChips: true });
       assert.equal(cookies.get('foo'), 'hello');
-      assert.equal(cookies.get('__Host-foo'), 'hello');
+      assert.equal(cookies.get('_CHIPS-foo'), 'hello');
       cookies = Cookies({
         secure: true,
         headers: {
-          cookie: '__Host-foo=hello; __Host-foo.sig=l0yCZaMfgLfAX4tuQ6mI4Hh3RBoeeWHrVHqNLlYx480',
+          cookie: '_CHIPS-foo=hello; _CHIPS-foo.sig=G4Idm9Wdp_vfCnUbOpQG284o22SgTe88SUmG6QW1ylk',
         },
       }, { secure: true }, { autoChips: true });
       assert.equal(cookies.get('foo', { signed: true }), 'hello');
@@ -803,7 +803,7 @@ describe('test/lib/cookies.test.js', () => {
       cookies = Cookies({
         secure: true,
         headers: {
-          cookie: '__Host-foo=hello; __Host-foo.sig=l0yCZaMfgLfAX4tuQ6mI4Hh3RBoeeWHrVHqNLlYx480-invalid',
+          cookie: '_CHIPS-foo=hello; _CHIPS-foo.sig=G4Idm9Wdp_vfCnUbOpQG284o22SgTe88SUmG6QW1ylk-invalid',
         },
       }, { secure: true }, { autoChips: true });
       assert.equal(cookies.get('foo', { signed: true }), undefined);
@@ -812,7 +812,7 @@ describe('test/lib/cookies.test.js', () => {
       cookies = Cookies({
         secure: true,
         headers: {
-          cookie: '__Host-foo=hello',
+          cookie: '_CHIPS-foo=hello',
         },
       }, { secure: true }, { autoChips: true });
       assert.equal(cookies.get('foo', { signed: true }), undefined);
@@ -821,7 +821,7 @@ describe('test/lib/cookies.test.js', () => {
       cookies = Cookies({
         secure: true,
         headers: {
-          cookie: '__Host-foo=hello; foo=',
+          cookie: '_CHIPS-foo=hello; foo=',
         },
       }, { secure: true }, { autoChips: true });
       assert.equal(cookies.get('foo', { signed: true }), undefined);
@@ -866,8 +866,8 @@ describe('test/lib/cookies.test.js', () => {
       const headers = cookies.ctx.response.headers['set-cookie'];
       // console.log(headers);
       assert.equal(headers.length, 4);
-      assert.equal(headers[0], '__Host-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
-      assert.equal(headers[1], '__Host-foo.sig=l0yCZaMfgLfAX4tuQ6mI4Hh3RBoeeWHrVHqNLlYx480; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(headers[0], '_CHIPS-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(headers[1], '_CHIPS-foo.sig=G4Idm9Wdp_vfCnUbOpQG284o22SgTe88SUmG6QW1ylk; path=/; samesite=none; secure; httponly; partitioned');
       assert.equal(headers[2], 'foo=hello; path=/; samesite=none; secure; httponly');
       assert.equal(headers[3], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; samesite=none; secure; httponly');
     });
@@ -890,7 +890,7 @@ describe('test/lib/cookies.test.js', () => {
       const headers = cookies.ctx.response.headers['set-cookie'];
       // console.log(headers);
       assert.equal(headers.length, 2);
-      assert.equal(headers[0], '__Host-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(headers[0], '_CHIPS-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
       assert.equal(headers[1], 'foo=hello; path=/; samesite=none; secure; httponly');
     });
 
@@ -911,8 +911,8 @@ describe('test/lib/cookies.test.js', () => {
       assert(opts.secure === undefined);
       const headers = cookies.ctx.response.headers['set-cookie'];
       assert.equal(headers.length, 4);
-      assert.equal(headers[0], '__Host-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
-      assert.equal(headers[1], '__Host-foo.sig=l0yCZaMfgLfAX4tuQ6mI4Hh3RBoeeWHrVHqNLlYx480; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(headers[0], '_CHIPS-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(headers[1], '_CHIPS-foo.sig=G4Idm9Wdp_vfCnUbOpQG284o22SgTe88SUmG6QW1ylk; path=/; samesite=none; secure; httponly; partitioned');
       assert.equal(headers[2], 'foo=hello; path=/; samesite=none; secure; httponly');
       assert.equal(headers[3], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; samesite=none; secure; httponly');
     });
