@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.1](https://github.com/eggjs/egg-cookies/compare/v2.9.0...v2.9.1) (2024-01-03)
+
+
+### Bug Fixes
+
+* use _CHIPS- prefix instead of __Host- ([#48](https://github.com/eggjs/egg-cookies/issues/48)) ([6b5e5be](https://github.com/eggjs/egg-cookies/commit/6b5e5be4f09b692b2867b390a300de8a1e142cbb))
+
 ## [2.9.0](https://github.com/eggjs/egg-cookies/compare/v2.8.3...v2.9.0) (2024-01-03)
 
 
