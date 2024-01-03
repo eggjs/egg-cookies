@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.0](https://github.com/eggjs/egg-cookies/compare/v2.8.3...v2.9.0) (2024-01-03)
+
+
+### Features
+
+* add autoChips to adaptation CHIPS mode ([#47](https://github.com/eggjs/egg-cookies/issues/47)) ([38d6408](https://github.com/eggjs/egg-cookies/commit/38d64084b78ad15f816b4e8c46efa3c591c04558))
+
 ## [2.8.3](https://github.com/eggjs/egg-cookies/compare/v2.8.2...v2.8.3) (2023-12-28)
 
 
