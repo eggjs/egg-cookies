@@ -28,6 +28,14 @@ ctx.cookies.set('key', 'value', options);
 
 每次设置或读取 signed cookie 或者 encrypt cookie 的时候，会用 keys 进行加密。每次加密都通过 keys 数组的第一个 key 进行加密，解密会从先到后逐个 key 尝试解密。读取 signed cookie 时，如果发现不是用第一个 key 进行加密时，会更新签名为第一个 key 加密的值。读取 encrypt cookie 时不会进行更新操作。
 
+### `defaultCookieOptions`
+
+全局默认配置：
+
+- autoChips - `Boolean` 是否开启 [CHIPS](https://developers.google.com/privacy-sandbox/3pcd/chips#security_design) 的自动适配方案，
+会自动给 Cookie 新增一个 `__Host` 为前缀的分区 Cookie，优先读取非分区 Cookie，读取失败则尝试读取 `__Host` 前缀的同名 Cookie 适配三方 Cookie 禁止逻辑。
+一旦配置 `autoChips=true`，那么会强制忽略 `partitioned`、`removeUnpartitioned` 参数。
+
 ## 设置 cookie
 
 通过 `cookies.set(key, value, options)` 的方式来设置一个 cookie。其中 options 支持的参数有：

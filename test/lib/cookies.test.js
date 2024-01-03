@@ -658,4 +658,302 @@ describe('test/lib/cookies.test.js', () => {
       assert.equal(headers[1], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; secure; httponly');
     });
   });
+
+  describe('defaultCookieOptions.autoChips = true', () => {
+    it('should not send partitioned property on incompatible clients', () => {
+      const userAgents = [
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML%2C like Gecko) Chrome/62.0.3202.94 Safari/537.36',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML%2C like Gecko) Chrome/52.0.2723.2 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/100.36 (KHTML, like Gecko) Safari/100.36',
+      ];
+      for (const ua of userAgents) {
+        const cookies = Cookies({
+          secure: true,
+          headers: {
+            'user-agent': ua,
+          },
+        }, { secure: true }, { autoChips: true, sameSite: 'None' });
+        const opts = {
+          signed: 1,
+        };
+        cookies.set('foo', 'hello', opts);
+
+        assert(opts.signed === 1);
+        assert(opts.secure === undefined);
+        assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/foo=hello/));
+        for (const str of cookies.ctx.response.headers['set-cookie']) {
+          assert(!str.includes('partitioned'));
+        }
+      }
+    });
+
+    it('should not send partitioned property on Chrome < 118', () => {
+      const cookies = Cookies({
+        secure: true,
+        headers: {
+          'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.3945.29 Safari/537.36',
+        },
+      }, { secure: true }, { autoChips: true, sameSite: 'None' });
+      const opts = {
+        signed: 1,
+      };
+      cookies.set('foo', 'hello', opts);
+
+      assert(opts.signed === 1);
+      assert(opts.secure === undefined);
+      assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/foo=hello/));
+      for (const str of cookies.ctx.response.headers['set-cookie']) {
+        assert(str.includes('; path=/; samesite=none; secure; httponly'));
+      }
+    });
+
+    it('should send partitioned property on Chrome >= 118', () => {
+      let cookies = Cookies({
+        secure: true,
+        headers: {
+          'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
+        },
+      }, { secure: true }, { autoChips: true, sameSite: 'None' });
+      const opts = {
+        signed: 1,
+      };
+      cookies.set('foo', 'hello', opts);
+
+      assert(opts.signed === 1);
+      assert(opts.secure === undefined);
+      let setCookies = cookies.ctx.response.headers['set-cookie'];
+      assert.equal(setCookies.length, 4);
+      assert.equal(setCookies[0], '__Host-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(setCookies[1], '__Host-foo.sig=l0yCZaMfgLfAX4tuQ6mI4Hh3RBoeeWHrVHqNLlYx480; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(setCookies[2], 'foo=hello; path=/; samesite=none; secure; httponly');
+      assert.equal(setCookies[3], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; samesite=none; secure; httponly');
+
+      cookies = Cookies({
+        secure: true,
+        headers: {
+          'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.3945.29 Safari/537.36',
+        },
+      }, { secure: true }, { autoChips: true, sameSite: 'None' });
+      cookies.set('foo', 'hello', opts);
+
+      assert(opts.signed === 1);
+      assert(opts.secure === undefined);
+      setCookies = cookies.ctx.response.headers['set-cookie'];
+      assert.equal(setCookies[0], '__Host-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(setCookies[1], '__Host-foo.sig=l0yCZaMfgLfAX4tuQ6mI4Hh3RBoeeWHrVHqNLlYx480; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(setCookies[2], 'foo=hello; path=/; samesite=none; secure; httponly');
+      assert.equal(setCookies[3], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; samesite=none; secure; httponly');
+
+      // empty user-agent
+      cookies = Cookies({
+        secure: true,
+        headers: {
+          'user-agent': '',
+        },
+      }, { secure: true }, { autoChips: true, partitioned: true, removeUnpartitioned: true, sameSite: 'None' });
+      cookies.set('foo', 'hello', opts);
+
+      assert(opts.signed === 1);
+      assert(opts.secure === undefined);
+      setCookies = cookies.ctx.response.headers['set-cookie'];
+      assert.equal(setCookies[0], '__Host-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(setCookies[1], '__Host-foo.sig=l0yCZaMfgLfAX4tuQ6mI4Hh3RBoeeWHrVHqNLlYx480; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(setCookies[2], 'foo=hello; path=/; samesite=none; secure; httponly');
+      assert.equal(setCookies[3], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; samesite=none; secure; httponly');
+
+      cookies = Cookies({
+        secure: true,
+        headers: {
+          'user-agent': '',
+        },
+      }, { secure: true }, { autoChips: true });
+      cookies.set('foo', 'hello', {
+        sameSite: 'None',
+        // ignore partitioned options
+        partitioned: true,
+      });
+
+      assert(opts.signed === 1);
+      assert(opts.secure === undefined);
+      setCookies = cookies.ctx.response.headers['set-cookie'];
+      assert.equal(setCookies[0], '__Host-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(setCookies[1], '__Host-foo.sig=l0yCZaMfgLfAX4tuQ6mI4Hh3RBoeeWHrVHqNLlYx480; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(setCookies[2], 'foo=hello; path=/; samesite=none; secure; httponly');
+      assert.equal(setCookies[3], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; samesite=none; secure; httponly');
+
+      // read from cookie
+      cookies = Cookies({
+        secure: true,
+        headers: {
+          cookie: '__Host-foo=hello; __Host-foo.sig=l0yCZaMfgLfAX4tuQ6mI4Hh3RBoeeWHrVHqNLlYx480; foo=hello; foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI',
+        },
+      }, { secure: true }, { autoChips: true });
+      assert.equal(cookies.get('foo'), 'hello');
+      assert.equal(cookies.get('__Host-foo'), 'hello');
+      cookies = Cookies({
+        secure: true,
+        headers: {
+          cookie: '__Host-foo=hello; __Host-foo.sig=l0yCZaMfgLfAX4tuQ6mI4Hh3RBoeeWHrVHqNLlYx480',
+        },
+      }, { secure: true }, { autoChips: true });
+      assert.equal(cookies.get('foo', { signed: true }), 'hello');
+      assert.equal(cookies.get('foo', { signed: false }), 'hello');
+      assert.equal(cookies.get('foo'), 'hello');
+
+      cookies = Cookies({
+        secure: true,
+        headers: {
+          cookie: '__Host-foo=hello; __Host-foo.sig=l0yCZaMfgLfAX4tuQ6mI4Hh3RBoeeWHrVHqNLlYx480-invalid',
+        },
+      }, { secure: true }, { autoChips: true });
+      assert.equal(cookies.get('foo', { signed: true }), undefined);
+      assert.equal(cookies.get('foo', { signed: false }), 'hello');
+      assert.equal(cookies.get('foo'), undefined);
+      cookies = Cookies({
+        secure: true,
+        headers: {
+          cookie: '__Host-foo=hello',
+        },
+      }, { secure: true }, { autoChips: true });
+      assert.equal(cookies.get('foo', { signed: true }), undefined);
+      assert.equal(cookies.get('foo', { signed: false }), 'hello');
+      assert.equal(cookies.get('foo'), undefined);
+      cookies = Cookies({
+        secure: true,
+        headers: {
+          cookie: '__Host-foo=hello; foo=',
+        },
+      }, { secure: true }, { autoChips: true });
+      assert.equal(cookies.get('foo', { signed: true }), undefined);
+      assert.equal(cookies.get('foo', { signed: false }), '');
+      assert.equal(cookies.get('foo'), undefined);
+    });
+
+    it('should not send SameSite=none property on non-secure context', () => {
+      const cookies = Cookies({
+        secure: false,
+        headers: {
+          'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.3945.29 Safari/537.36',
+        },
+      }, null, { autoChips: true, sameSite: 'None' });
+      const opts = {
+        signed: 1,
+      };
+      cookies.set('foo', 'hello', opts);
+
+      assert(opts.signed === 1);
+      assert(opts.secure === undefined);
+      assert(cookies.ctx.response.headers['set-cookie'].join(';').match(/foo=hello/));
+      for (const str of cookies.ctx.response.headers['set-cookie']) {
+        assert(str.includes('; path=/; httponly'));
+      }
+    });
+
+    it('should ignore remove unpartitioned property', () => {
+      const cookies = Cookies({
+        secure: true,
+        headers: {
+          'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
+        },
+      }, { secure: true }, { autoChips: true, partitioned: true, removeUnpartitioned: true, sameSite: 'None' });
+      const opts = {
+        signed: 1,
+      };
+      cookies.set('foo', 'hello', opts);
+
+      assert(opts.signed === 1);
+      assert(opts.secure === undefined);
+      const headers = cookies.ctx.response.headers['set-cookie'];
+      // console.log(headers);
+      assert.equal(headers.length, 4);
+      assert.equal(headers[0], '__Host-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(headers[1], '__Host-foo.sig=l0yCZaMfgLfAX4tuQ6mI4Hh3RBoeeWHrVHqNLlYx480; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(headers[2], 'foo=hello; path=/; samesite=none; secure; httponly');
+      assert.equal(headers[3], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; samesite=none; secure; httponly');
+    });
+
+    it('should ignore remove unpartitioned property when autoChips = true and signed = false', () => {
+      const cookies = Cookies({
+        secure: true,
+        headers: {
+          'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
+        },
+      }, { secure: true }, { autoChips: true, partitioned: true, removeUnpartitioned: true, sameSite: 'None' });
+      const opts = {
+        secure: true,
+        signed: false,
+      };
+      cookies.set('foo', 'hello', opts);
+
+      assert(opts.signed === false);
+      assert(opts.secure === true);
+      const headers = cookies.ctx.response.headers['set-cookie'];
+      // console.log(headers);
+      assert.equal(headers.length, 2);
+      assert.equal(headers[0], '__Host-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(headers[1], 'foo=hello; path=/; samesite=none; secure; httponly');
+    });
+
+    it('should work with overwrite = true', () => {
+      const cookies = Cookies({
+        secure: true,
+        headers: {
+          'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
+        },
+      }, { secure: true }, { autoChips: true, overwrite: true, sameSite: 'none' });
+      const opts = {
+        signed: 1,
+      };
+      cookies.set('foo', 'hello2222', opts);
+      cookies.set('foo', 'hello', opts);
+
+      assert(opts.signed === 1);
+      assert(opts.secure === undefined);
+      const headers = cookies.ctx.response.headers['set-cookie'];
+      assert.equal(headers.length, 4);
+      assert.equal(headers[0], '__Host-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(headers[1], '__Host-foo.sig=l0yCZaMfgLfAX4tuQ6mI4Hh3RBoeeWHrVHqNLlYx480; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(headers[2], 'foo=hello; path=/; samesite=none; secure; httponly');
+      assert.equal(headers[3], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; samesite=none; secure; httponly');
+    });
+
+    it('should not set partitioned property when secure = false', () => {
+      const cookies = Cookies({
+        secure: true,
+        headers: {
+          'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
+        },
+      }, { secure: true }, { autoChips: true, sameSite: 'None' });
+      const opts = {
+        signed: 1,
+        secure: false,
+      };
+      cookies.set('foo', 'hello', opts);
+
+      assert(opts.signed === 1);
+      const headers = cookies.ctx.response.headers['set-cookie'];
+      assert.equal(headers.length, 2);
+      assert.equal(headers[0], 'foo=hello; path=/; httponly');
+      assert.equal(headers[1], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; httponly');
+    });
+
+    it('should not set partitioned property when sameSite != none', () => {
+      const cookies = Cookies({
+        secure: true,
+        headers: {
+          'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
+        },
+      }, { secure: true }, { autoChips: true });
+      const opts = {
+        signed: 1,
+      };
+      cookies.set('foo', 'hello', opts);
+
+      assert(opts.signed === 1);
+      const headers = cookies.ctx.response.headers['set-cookie'];
+      assert.equal(headers.length, 2);
+      assert.equal(headers[0], 'foo=hello; path=/; secure; httponly');
+      assert.equal(headers[1], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; secure; httponly');
+    });
+  });
 });
