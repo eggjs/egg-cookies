@@ -7,7 +7,7 @@
 declare namespace EggCookies {
   interface DefaultCookieOptions {
     /**
-     * Auto get and set `__Host` prefix cookie to adaptation CHIPS mode (The default value is false).
+     * Auto get and set `_CHIPS-` prefix cookie to adaptation CHIPS mode (The default value is false).
      */
     autoChips?: boolean;
   }
