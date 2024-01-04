@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.3](https://github.com/eggjs/egg-cookies/compare/v2.9.2...v2.9.3) (2024-01-04)
+
+
+### Reverts
+
+* Revert "fix: only enable autoChips on cross-site request (#49)" (#50) ([b0452dd](https://github.com/eggjs/egg-cookies/commit/b0452dd0011a7ed5cc8fd489a2fbb6fa5c076ac2)), closes [#49](https://github.com/eggjs/egg-cookies/issues/49) [#50](https://github.com/eggjs/egg-cookies/issues/50)
+
 ## [2.9.2](https://github.com/eggjs/egg-cookies/compare/v2.9.1...v2.9.2) (2024-01-04)
 
 
