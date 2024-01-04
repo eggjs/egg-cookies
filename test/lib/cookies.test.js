@@ -671,7 +671,6 @@ describe('test/lib/cookies.test.js', () => {
           secure: true,
           headers: {
             'user-agent': ua,
-            'sec-fetch-site': 'cross-site',
           },
         }, { secure: true }, { autoChips: true, sameSite: 'None' });
         const opts = {
@@ -693,7 +692,6 @@ describe('test/lib/cookies.test.js', () => {
         secure: true,
         headers: {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.3945.29 Safari/537.36',
-          'sec-fetch-site': 'cross-site',
         },
       }, { secure: true }, { autoChips: true, sameSite: 'None' });
       const opts = {
@@ -709,48 +707,11 @@ describe('test/lib/cookies.test.js', () => {
       }
     });
 
-    it('should not send partitioned property on non-cross-site request', () => {
-      let cookies = Cookies({
-        secure: true,
-        headers: {
-          'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.3945.29 Safari/537.36',
-          'sec-fetch-site': 'same-origin',
-        },
-      }, { secure: true }, { autoChips: true, sameSite: 'None' });
-      const opts = {
-        signed: 1,
-      };
-      cookies.set('foo', 'hello', opts);
-
-      assert(opts.signed === 1);
-      assert(opts.secure === undefined);
-      let setCookies = cookies.ctx.response.headers['set-cookie'];
-      assert.equal(setCookies.length, 2);
-      assert.equal(setCookies[0], 'foo=hello; path=/; samesite=none; secure; httponly');
-      assert.equal(setCookies[1], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; samesite=none; secure; httponly');
-
-      cookies = Cookies({
-        secure: true,
-        headers: {
-          'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.3945.29 Safari/537.36',
-        },
-      }, { secure: true }, { autoChips: true, sameSite: 'None' });
-      cookies.set('foo', 'hello', opts);
-
-      assert(opts.signed === 1);
-      assert(opts.secure === undefined);
-      setCookies = cookies.ctx.response.headers['set-cookie'];
-      assert.equal(setCookies.length, 2);
-      assert.equal(setCookies[0], 'foo=hello; path=/; samesite=none; secure; httponly');
-      assert.equal(setCookies[1], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; samesite=none; secure; httponly');
-    });
-
     it('should send partitioned property on Chrome >= 118', () => {
       let cookies = Cookies({
         secure: true,
         headers: {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
-          'sec-fetch-site': 'cross-site',
         },
       }, { secure: true }, { autoChips: true, sameSite: 'None' });
       const opts = {
@@ -771,7 +732,6 @@ describe('test/lib/cookies.test.js', () => {
         secure: true,
         headers: {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.3945.29 Safari/537.36',
-          'sec-fetch-site': 'cross-site',
         },
       }, { secure: true }, { autoChips: true, sameSite: 'None' });
       cookies.set('foo', 'hello', opts);
@@ -789,7 +749,6 @@ describe('test/lib/cookies.test.js', () => {
         secure: true,
         headers: {
           'user-agent': '',
-          'sec-fetch-site': 'cross-site',
         },
       }, { secure: true }, { autoChips: true, partitioned: true, removeUnpartitioned: true, sameSite: 'None' });
       cookies.set('foo', 'hello', opts);
@@ -806,7 +765,6 @@ describe('test/lib/cookies.test.js', () => {
         secure: true,
         headers: {
           'user-agent': '',
-          'sec-fetch-site': 'cross-site',
         },
       }, { secure: true }, { autoChips: true });
       cookies.set('foo', 'hello', {
@@ -828,7 +786,6 @@ describe('test/lib/cookies.test.js', () => {
         secure: true,
         headers: {
           cookie: '_CHIPS-foo=hello; _CHIPS-foo.sig=G4Idm9Wdp_vfCnUbOpQG284o22SgTe88SUmG6QW1ylk; foo=hello; foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI',
-          'sec-fetch-site': 'cross-site',
         },
       }, { secure: true }, { autoChips: true });
       assert.equal(cookies.get('foo'), 'hello');
@@ -837,30 +794,16 @@ describe('test/lib/cookies.test.js', () => {
         secure: true,
         headers: {
           cookie: '_CHIPS-foo=hello; _CHIPS-foo.sig=G4Idm9Wdp_vfCnUbOpQG284o22SgTe88SUmG6QW1ylk',
-          'sec-fetch-site': 'cross-site',
         },
       }, { secure: true }, { autoChips: true });
       assert.equal(cookies.get('foo', { signed: true }), 'hello');
       assert.equal(cookies.get('foo', { signed: false }), 'hello');
       assert.equal(cookies.get('foo'), 'hello');
 
-      // disable autoChips on non-cross-site request
-      cookies = Cookies({
-        secure: true,
-        headers: {
-          cookie: '_CHIPS-foo=hello; _CHIPS-foo.sig=G4Idm9Wdp_vfCnUbOpQG284o22SgTe88SUmG6QW1ylk',
-          'sec-fetch-site': 'none',
-        },
-      }, { secure: true }, { autoChips: true });
-      assert.equal(cookies.get('foo', { signed: true }), undefined);
-      assert.equal(cookies.get('foo', { signed: false }), undefined);
-      assert.equal(cookies.get('foo'), undefined);
-
       cookies = Cookies({
         secure: true,
         headers: {
           cookie: '_CHIPS-foo=hello; _CHIPS-foo.sig=G4Idm9Wdp_vfCnUbOpQG284o22SgTe88SUmG6QW1ylk-invalid',
-          'sec-fetch-site': 'cross-site',
         },
       }, { secure: true }, { autoChips: true });
       assert.equal(cookies.get('foo', { signed: true }), undefined);
@@ -870,7 +813,6 @@ describe('test/lib/cookies.test.js', () => {
         secure: true,
         headers: {
           cookie: '_CHIPS-foo=hello',
-          'sec-fetch-site': 'cross-site',
         },
       }, { secure: true }, { autoChips: true });
       assert.equal(cookies.get('foo', { signed: true }), undefined);
@@ -880,7 +822,6 @@ describe('test/lib/cookies.test.js', () => {
         secure: true,
         headers: {
           cookie: '_CHIPS-foo=hello; foo=',
-          'sec-fetch-site': 'cross-site',
         },
       }, { secure: true }, { autoChips: true });
       assert.equal(cookies.get('foo', { signed: true }), undefined);
@@ -893,7 +834,6 @@ describe('test/lib/cookies.test.js', () => {
         secure: false,
         headers: {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.3945.29 Safari/537.36',
-          'sec-fetch-site': 'cross-site',
         },
       }, null, { autoChips: true, sameSite: 'None' });
       const opts = {
@@ -914,7 +854,6 @@ describe('test/lib/cookies.test.js', () => {
         secure: true,
         headers: {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
-          'sec-fetch-site': 'cross-site',
         },
       }, { secure: true }, { autoChips: true, partitioned: true, removeUnpartitioned: true, sameSite: 'None' });
       const opts = {
@@ -938,7 +877,6 @@ describe('test/lib/cookies.test.js', () => {
         secure: true,
         headers: {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
-          'sec-fetch-site': 'cross-site',
         },
       }, { secure: true }, { autoChips: true, partitioned: true, removeUnpartitioned: true, sameSite: 'None' });
       const opts = {
@@ -961,7 +899,6 @@ describe('test/lib/cookies.test.js', () => {
         secure: true,
         headers: {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
-          'sec-fetch-site': 'cross-site',
         },
       }, { secure: true }, { autoChips: true, overwrite: true, sameSite: 'none' });
       const opts = {
@@ -985,7 +922,6 @@ describe('test/lib/cookies.test.js', () => {
         secure: true,
         headers: {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
-          'sec-fetch-site': 'cross-site',
         },
       }, { secure: true }, { autoChips: true, sameSite: 'None' });
       const opts = {
@@ -1006,7 +942,6 @@ describe('test/lib/cookies.test.js', () => {
         secure: true,
         headers: {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
-          'sec-fetch-site': 'cross-site',
         },
       }, { secure: true }, { autoChips: true });
       const opts = {
