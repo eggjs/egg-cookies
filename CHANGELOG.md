@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.2](https://github.com/eggjs/egg-cookies/compare/v2.9.1...v2.9.2) (2024-01-04)
+
+
+### Bug Fixes
+
+* only enable autoChips on cross-site request ([#49](https://github.com/eggjs/egg-cookies/issues/49)) ([665a335](https://github.com/eggjs/egg-cookies/commit/665a33574f2c27bda5d59eb8f5e5b70b2ee9ad97))
+
 ## [2.9.1](https://github.com/eggjs/egg-cookies/compare/v2.9.0...v2.9.1) (2024-01-03)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "egg-cookies",
-  "version": "2.9.1",
+  "version": "2.9.2",
   "description": "cookies module for egg",
   "files": [
     "lib",
