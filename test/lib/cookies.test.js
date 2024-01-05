@@ -745,6 +745,7 @@ describe('test/lib/cookies.test.js', () => {
       assert.equal(setCookies[3], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; samesite=none; secure; httponly');
 
       // empty user-agent
+      // disable autoChips if partitioned enable
       cookies = Cookies({
         secure: true,
         headers: {
@@ -756,10 +757,10 @@ describe('test/lib/cookies.test.js', () => {
       assert(opts.signed === 1);
       assert(opts.secure === undefined);
       setCookies = cookies.ctx.response.headers['set-cookie'];
-      assert.equal(setCookies[0], '_CHIPS-foo=hello; path=/; samesite=none; secure; httponly; partitioned');
-      assert.equal(setCookies[1], '_CHIPS-foo.sig=G4Idm9Wdp_vfCnUbOpQG284o22SgTe88SUmG6QW1ylk; path=/; samesite=none; secure; httponly; partitioned');
-      assert.equal(setCookies[2], 'foo=hello; path=/; samesite=none; secure; httponly');
-      assert.equal(setCookies[3], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; samesite=none; secure; httponly');
+      assert.equal(setCookies[0], 'foo=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=none; secure; httponly');
+      assert.equal(setCookies[1], 'foo.sig=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=none; secure; httponly');
+      assert.equal(setCookies[2], 'foo=hello; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(setCookies[3], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; samesite=none; secure; httponly; partitioned');
 
       cookies = Cookies({
         secure: true,
@@ -769,8 +770,8 @@ describe('test/lib/cookies.test.js', () => {
       }, { secure: true }, { autoChips: true });
       cookies.set('foo', 'hello', {
         sameSite: 'None',
-        // ignore partitioned options
-        partitioned: true,
+        // ignore removeUnpartitioned options
+        removeUnpartitioned: true,
       });
 
       assert(opts.signed === 1);
@@ -849,13 +850,34 @@ describe('test/lib/cookies.test.js', () => {
       }
     });
 
+    it('should disable autoChips when partitioned=true', () => {
+      const cookies = Cookies({
+        secure: true,
+        headers: {
+          'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
+        },
+      }, { secure: true }, { autoChips: true, partitioned: true, sameSite: 'None' });
+      const opts = {
+        signed: 1,
+      };
+      cookies.set('foo', 'hello', opts);
+
+      assert(opts.signed === 1);
+      assert(opts.secure === undefined);
+      const headers = cookies.ctx.response.headers['set-cookie'];
+      // console.log(headers);
+      assert.equal(headers.length, 2);
+      assert.equal(headers[0], 'foo=hello; path=/; samesite=none; secure; httponly; partitioned');
+      assert.equal(headers[1], 'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; samesite=none; secure; httponly; partitioned');
+    });
+
     it('should ignore remove unpartitioned property', () => {
       const cookies = Cookies({
         secure: true,
         headers: {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
         },
-      }, { secure: true }, { autoChips: true, partitioned: true, removeUnpartitioned: true, sameSite: 'None' });
+      }, { secure: true }, { autoChips: true, partitioned: false, removeUnpartitioned: true, sameSite: 'None' });
       const opts = {
         signed: 1,
       };
@@ -878,7 +900,7 @@ describe('test/lib/cookies.test.js', () => {
         headers: {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
         },
-      }, { secure: true }, { autoChips: true, partitioned: true, removeUnpartitioned: true, sameSite: 'None' });
+      }, { secure: true }, { autoChips: true, partitioned: false, removeUnpartitioned: true, sameSite: 'None' });
       const opts = {
         secure: true,
         signed: false,
