@@ -34,7 +34,7 @@ ctx.cookies.set('key', 'value', options);
 
 - autoChips - `Boolean` 是否开启 [CHIPS](https://developers.google.com/privacy-sandbox/3pcd/chips#security_design) 的自动适配方案，
 会自动给 Cookie 新增一个 `_CHIPS-` 为前缀的分区 Cookie，优先读取非分区 Cookie，读取失败则尝试读取 `_CHIPS-` 前缀的同名 Cookie 适配三方 Cookie 禁止逻辑。
-一旦配置 `cookies.set` 设置 `partitioned=true`，那么会强制忽略 `autoChips` 参数。
+一旦 `cookies.set` 设置 `partitioned=true`，那么会强制忽略 `autoChips` 参数。
 
 ## 设置 cookie
 
