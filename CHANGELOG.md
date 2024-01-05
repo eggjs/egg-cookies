@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.4](https://github.com/eggjs/egg-cookies/compare/v2.9.3...v2.9.4) (2024-01-05)
+
+
+### Bug Fixes
+
+* disable autoChips if set cookie with partitioned ([#51](https://github.com/eggjs/egg-cookies/issues/51)) ([148c61c](https://github.com/eggjs/egg-cookies/commit/148c61c3be41d90c44c3db8bfe870cae31d586ad))
+
 ## [2.9.3](https://github.com/eggjs/egg-cookies/compare/v2.9.2...v2.9.3) (2024-01-04)
 
 
