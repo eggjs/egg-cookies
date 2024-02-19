@@ -72,6 +72,10 @@ declare namespace EggCookies {
      * Remove unpartitioned same name cookie or not.
      */
     removeUnpartitioned?: boolean;
+    /**
+     * The cookie priority.
+     */
+    priority?: 'low' | 'medium' | 'high';
   }
 
   class CookieError extends Error { }

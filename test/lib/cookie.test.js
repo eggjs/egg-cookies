@@ -1,13 +1,14 @@
 'use strict';
 
-const Cookie = require('../../lib/cookie');
 const assert = require('assert');
+const Cookie = require('../../lib/cookie');
 
 function assertExceptionCheck(expectedMsg) {
   return err => {
     return err.message === expectedMsg;
   };
 }
+
 describe('test/lib/cookie.test.js', () => {
   it('create cookies contains invalid string error should throw', () => {
     assert.throws(() => new Cookie('中文', 'value'), assertExceptionCheck('argument name is invalid'));
@@ -177,6 +178,52 @@ describe('test/lib/cookie.test.js', () => {
           const cookie = new Cookie('foo', 'bar', { sameSite: 'Strict' });
           assert.equal(cookie.toHeader(), 'foo=bar; path=/; samesite=strict; httponly');
         }
+      });
+    });
+  });
+
+  describe('priority', () => {
+    it('should set the .priority property', () => {
+      const cookie = new Cookie('foo', 'bar', { priority: 'low' });
+      assert.strictEqual(cookie.attrs.priority, 'low');
+    });
+
+    it('should default to undefined', () => {
+      const cookie = new Cookie('foo', 'bar');
+      assert.strictEqual(cookie.attrs.priority, undefined);
+    });
+
+    it('should throw on invalid value', () => {
+      assert.throws(() => {
+        new Cookie('foo', 'bar', { priority: 'foo' });
+      }, /argument option priority is invalid/);
+    });
+
+    describe('when set to "low"', () => {
+      it('should set "priority=low" attribute in header', () => {
+        const cookie = new Cookie('foo', 'bar', { priority: 'low' });
+        assert.strictEqual(cookie.toHeader(), 'foo=bar; path=/; priority=low; httponly');
+      });
+    });
+
+    describe('when set to "medium"', () => {
+      it('should set "priority=medium" attribute in header', () => {
+        const cookie = new Cookie('foo', 'bar', { priority: 'medium' });
+        assert.strictEqual(cookie.toHeader(), 'foo=bar; path=/; priority=medium; httponly');
+      });
+    });
+
+    describe('when set to "high"', () => {
+      it('should set "priority=high" attribute in header', () => {
+        const cookie = new Cookie('foo', 'bar', { priority: 'high' });
+        assert.strictEqual(cookie.toHeader(), 'foo=bar; path=/; priority=high; httponly');
+      });
+    });
+
+    describe('when set to "HIGH"', () => {
+      it('should set "priority=high" attribute in header', () => {
+        const cookie = new Cookie('foo', 'bar', { priority: 'HIGH' });
+        assert.strictEqual(cookie.toHeader(), 'foo=bar; path=/; priority=high; httponly');
       });
     });
   });

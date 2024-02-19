@@ -2,9 +2,10 @@
 
 const Benchmark = require('benchmark');
 const benchmarks = require('beautify-benchmark');
-const EggCookies = require('..');
 const Cookies = require('cookies');
 const Keygrip = require('keygrip');
+const EggCookies = require('..');
+
 const suite = new Benchmark.Suite();
 
 const keys = [ 'this is a very very loooooooooooooooooooooooooooooooooooooong key' ];
