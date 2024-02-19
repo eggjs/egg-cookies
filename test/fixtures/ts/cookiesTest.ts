@@ -60,7 +60,7 @@ saveActualAnswer.test1.actualIndex = cookie.indexOf('bar');
 
 // Test 2: should signed work fine
 cookies = CreateCookie();
-cookies.set('foo', 'bar', { signed: true });
+cookies.set('foo', 'bar', { signed: true, priority: 'high' });
 cookie = (<any>cookies).ctx.response.headers['set-cookie'].join(';');
 (<any>cookies).ctx.request.headers.cookie = cookie;
 value = cookies.get('foo', { signed: true });

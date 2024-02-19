@@ -1,7 +1,7 @@
 'use strict';
 
-const Cookies = require('..');
 const EventEmitter = require('events');
+const Cookies = require('..');
 
 module.exports = (req, options, defaultCookieOptions) => {
   options = options || {};
