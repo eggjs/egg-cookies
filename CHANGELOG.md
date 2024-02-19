@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.10.0](https://github.com/eggjs/egg-cookies/compare/v2.9.4...v2.10.0) (2024-02-19)
+
+
+### Features
+
+* support priority ([#52](https://github.com/eggjs/egg-cookies/issues/52)) ([f9f1214](https://github.com/eggjs/egg-cookies/commit/f9f12149637d37df8e6cecd9cb50d8c27421c7d0))
+
 ## [2.9.4](https://github.com/eggjs/egg-cookies/compare/v2.9.3...v2.9.4) (2024-01-05)
 
 
