@@ -7,7 +7,7 @@ import { CookieError } from './error.js';
 
 const keyCache = new Map<string[], Keygrip>();
 
-export interface DefaultCookieOptions {
+export interface DefaultCookieOptions extends CookieSetOptions {
   /**
    * Auto get and set `_CHIPS-` prefix cookie to adaptation CHIPS mode (The default value is false).
    */
@@ -290,7 +290,7 @@ function getPattern(name: string) {
   return reg;
 }
 
-function computeSigned(opts: { encrypt?: boolean; signed?: boolean }) {
+function computeSigned(opts: { encrypt?: boolean; signed?: boolean | number }) {
   // encrypt default to false, signed default to true.
   // disable singed when encrypt is true.
   if (opts.encrypt) return false;

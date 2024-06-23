@@ -60,7 +60,7 @@ export interface CookieSetOptions {
   /**
    * Is it signed or not.
    */
-  signed?: boolean;
+  signed?: boolean | number;
   /**
    * Is it partitioned or not.
    */

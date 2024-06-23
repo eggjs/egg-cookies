@@ -1,33 +1,35 @@
-// 'use strict';
+import { EventEmitter } from 'node:events';
+import { Cookies, DefaultCookieOptions } from '../src/index.js';
 
-// const EventEmitter = require('events');
-// const Cookies = require('..');
+export default function createCookie(req?: any,
+  options?: { keys?: string[] | null; secure?: boolean; } | null, defaultCookieOptions?: DefaultCookieOptions) {
+  options = options || {};
+  let keys = options.keys;
+  keys = keys === undefined ? [ 'key', 'keys' ] : keys;
+  const ctx: Record<string, any> = {
+    secure: options.secure,
+    app: new EventEmitter(),
+  };
+  ctx.request = {
+    headers: {},
+    get(key: string) {
+      return this.headers[key];
+    },
+    ...req,
+  };
 
-// module.exports = (req, options, defaultCookieOptions) => {
-//   options = options || {};
-//   let keys = options.keys;
-//   keys = keys === undefined ? [ 'key', 'keys' ] : keys;
-//   const ctx = { secure: options.secure };
-//   ctx.app = new EventEmitter();
-//   ctx.request = Object.assign({
-//     headers: {},
-//     get(key) {
-//       return this.headers[key];
-//     },
-//   }, req);
+  ctx.response = {
+    headers: {},
+    get(key: string) {
+      return this.headers[key];
+    },
+    set(key: string, value: string) {
+      this.headers[key] = value;
+    },
+  };
 
-//   ctx.response = {
-//     headers: {},
-//     get(key) {
-//       return this.headers[key];
-//     },
-//     set(key, value) {
-//       this.headers[key] = value;
-//     },
-//   };
+  ctx.get = ctx.request.get.bind(ctx.request);
+  ctx.set = ctx.response.set.bind(ctx.response);
 
-//   ctx.get = ctx.request.get.bind(ctx.request);
-//   ctx.set = ctx.response.set.bind(ctx.response);
-
-//   return new Cookies(ctx, keys, defaultCookieOptions);
-// };
+  return new Cookies(ctx, keys as any, defaultCookieOptions);
+}

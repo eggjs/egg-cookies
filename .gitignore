@@ -2,4 +2,6 @@ node_modules
 coverage
 test/ts/report
 package-lock.json
+.tshy*
 .eslintcache
+dist
