@@ -1,45 +1,72 @@
 {
-  "name": "egg-cookies",
+  "name": "@eggjs/cookies",
   "version": "2.10.0",
+  "engines": {
+    "node": ">= 18.19.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "cookies module for egg",
-  "files": [
-    "lib",
-    "index.d.ts"
-  ],
-  "main": "lib/cookies.js",
   "dependencies": {
-    "scmp": "^2.0.0",
-    "should-send-same-site-none": "^2.0.2",
-    "utility": "^1.14.0"
+    "should-send-same-site-none": "^2.0.5",
+    "utility": "^2.1.0"
   },
   "devDependencies": {
-    "@types/node": "^10.9.4",
     "beautify-benchmark": "^0.2.4",
     "benchmark": "^2.1.4",
     "cookies": "^0.7.1",
-    "egg-bin": "1",
-    "eslint": "^7.3.1",
-    "eslint-config-egg": "^8.0.1",
-    "git-contributor": "2",
     "keygrip": "^1.0.2",
-    "ts-node": "^7.0.1",
-    "typescript": "^3.0.3"
+    "@arethetypeswrong/cli": "^0.15.3",
+    "@eggjs/tsconfig": "1",
+    "@types/node": "20",
+    "@types/mocha": "10",
+    "egg-bin": "6",
+    "eslint": "8",
+    "eslint-config-egg": "13",
+    "tshy": "1",
+    "tshy-after": "1",
+    "typescript": "5"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/eggjs/egg-cookies.git"
+    "url": "git://github.com/eggjs/egg-cookies.git"
   },
   "homepage": "https://github.com/eggjs/egg-cookies",
   "author": "fengmk2 <fengmk2@gmail.com> (https://github.com/fengmk2)",
   "license": "MIT",
   "scripts": {
-    "contributor": "git-contributor",
+    "lint": "eslint --cache src test --ext .ts",
     "test": "npm run lint -- --fix && egg-bin test",
-    "cov": "egg-bin cov",
-    "lint": "eslint lib benchmark test",
-    "ci": "npm run lint && npm run cov"
+    "ci": "npm run lint && egg-bin cov && npm run prepublishOnly && attw --pack",
+    "prepublishOnly": "tshy && tshy-after"
   },
-  "engines": {
-    "node": ">= 10.0.0"
-  }
+  "type": "module",
+  "tshy": {
+    "exports": {
+      ".": "./src/index.ts",
+      "./package.json": "./package.json"
+    }
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "source": "./src/index.ts",
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "source": "./src/index.ts",
+        "types": "./dist/commonjs/index.d.ts",
+        "default": "./dist/commonjs/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "types": "./dist/commonjs/index.d.ts",
+  "main": "./dist/commonjs/index.js"
 }

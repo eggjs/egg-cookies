@@ -1,6 +1,6 @@
 'use strict';
 
-const Cookies = require('../cookies');
+const Cookies = require('./cookies');
 const assert = require('assert');
 const CookieError = require('../../lib/error');
 

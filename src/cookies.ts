@@ -1,48 +1,66 @@
-'use strict';
+import assert from 'node:assert';
+import { base64decode, base64encode } from 'utility';
+import { isSameSiteNoneCompatible } from 'should-send-same-site-none';
+import { Keygrip } from './keygrip.js';
+import { Cookie, CookieSetOptions } from './cookie.js';
+import { CookieError } from './error.js';
 
-const assert = require('assert');
-const utility = require('utility');
-const _isSameSiteNoneCompatible = require('should-send-same-site-none').isSameSiteNoneCompatible;
-const Keygrip = require('./keygrip');
-const Cookie = require('./cookie');
-const CookieError = require('./error');
+const keyCache = new Map<string[], Keygrip>();
 
-const KEYS_ARRAY = Symbol('eggCookies:keysArray');
-const KEYS = Symbol('eggCookies:keys');
-const PARSED_UA = Symbol('eggCookies:parsedUA');
-const keyCache = new Map();
+export interface DefaultCookieOptions {
+  /**
+   * Auto get and set `_CHIPS-` prefix cookie to adaptation CHIPS mode (The default value is false).
+   */
+  autoChips?: boolean;
+}
+
+export interface CookieGetOptions {
+  /**
+   * Whether to sign or not (The default value is true).
+   */
+  signed?: boolean;
+  /**
+   * Encrypt the cookie's value or not (The default value is false).
+   */
+  encrypt?: boolean;
+}
 
 /**
  * cookies for egg
  * extend pillarjs/cookies, add encrypt and decrypt
  */
+export class Cookies {
+  readonly #keysArray: string[];
+  #keys: Keygrip;
+  readonly #defaultCookieOptions?: DefaultCookieOptions;
+  readonly #autoChips?: boolean;
+  readonly ctx: Record<string, any>;
+  readonly app: Record<string, any>;
+  readonly secure: boolean;
+  #parseChromiumResult?: ParseChromiumResult;
 
-class Cookies {
-  constructor(ctx, keys, defaultCookieOptions) {
-    this[KEYS_ARRAY] = keys;
-    this._keys = keys;
+  constructor(ctx: Record<string, any>, keys: string[], defaultCookieOptions?: DefaultCookieOptions) {
+    this.#keysArray = keys;
     // default cookie options
-    this._defaultCookieOptions = defaultCookieOptions;
-    this._autoChips = defaultCookieOptions && defaultCookieOptions.autoChips;
+    this.#defaultCookieOptions = defaultCookieOptions;
+    this.#autoChips = defaultCookieOptions?.autoChips;
     this.ctx = ctx;
     this.secure = this.ctx.secure;
     this.app = ctx.app;
   }
 
   get keys() {
-    if (!this[KEYS]) {
-      const keysArray = this[KEYS_ARRAY];
-      assert(Array.isArray(keysArray), '.keys required for encrypt/sign cookies');
-      const cache = keyCache.get(keysArray);
+    if (!this.#keys) {
+      assert(Array.isArray(this.#keysArray), '.keys required for encrypt/sign cookies');
+      const cache = keyCache.get(this.#keysArray);
       if (cache) {
-        this[KEYS] = cache;
+        this.#keys = cache;
       } else {
-        this[KEYS] = new Keygrip(this[KEYS_ARRAY]);
-        keyCache.set(keysArray, this[KEYS]);
+        this.#keys = new Keygrip(this.#keysArray);
+        keyCache.set(this.#keysArray, this.#keys);
       }
     }
-
-    return this[KEYS];
+    return this.#keys;
   }
 
   /**
@@ -53,20 +71,18 @@ class Cookies {
    *            - {Boolean} encrypt - default to false
    * @return {String} value - cookie's value
    */
-  get(name, opts) {
-    opts = opts || {};
+  get(name: string, opts: CookieGetOptions = {}): string | undefined {
     let value = this._get(name, opts);
-    if (value === undefined && this._autoChips) {
+    if (value === undefined && this.#autoChips) {
       // try to read _CHIPS-${name} prefix cookie
-      value = this._get(this._formatChipsCookieName(name), opts);
+      value = this._get(this.#formatChipsCookieName(name), opts);
     }
     return value;
   }
 
-  _get(name, opts) {
+  _get(name: string, opts: CookieGetOptions) {
     const signed = computeSigned(opts);
-
-    const header = this.ctx.get('cookie');
+    const header: string = this.ctx.get('cookie');
     if (!header) return;
 
     const match = header.match(getPattern(name));
@@ -96,25 +112,30 @@ class Cookies {
     }
 
     // encrypt
-    value = utility.base64decode(value, true, 'buffer');
+    value = base64decode(value, true, 'buffer') as string;
     const res = this.keys.decrypt(value);
     return res ? res.value.toString() : undefined;
   }
 
-  set(name, value, opts) {
-    opts = Object.assign({}, this._defaultCookieOptions, opts);
+  set(name: string, value: string | null, opts?: CookieSetOptions) {
+    opts = {
+      ...this.#defaultCookieOptions,
+      ...opts,
+    };
     const signed = computeSigned(opts);
     value = value || '';
     if (!this.secure && opts.secure) {
       throw new CookieError('Cannot send secure cookie over unencrypted connection');
     }
 
-    let headers = this.ctx.response.get('set-cookie') || [];
-    if (!Array.isArray(headers)) headers = [ headers ];
+    let headers: string[] = this.ctx.response.get('set-cookie') || [];
+    if (!Array.isArray(headers)) {
+      headers = [ headers ];
+    }
 
     // encrypt
     if (opts.encrypt) {
-      value = value && utility.base64encode(this.keys.encrypt(value), true);
+      value = value && base64encode(this.keys.encrypt(value), true);
     }
 
     // http://browsercookielimits.squawky.net/
@@ -124,10 +145,10 @@ class Cookies {
 
     // https://github.com/linsight/should-send-same-site-none
     // fixed SameSite=None: Known Incompatible Clients
-    const userAgent = this.ctx.get('user-agent');
+    const userAgent: string | undefined = this.ctx.get('user-agent');
     let isSameSiteNone = false;
     // disable autoChips if partitioned enable
-    let autoChips = !opts.partitioned && this._autoChips;
+    let autoChips = !opts.partitioned && this.#autoChips;
     if (opts.sameSite && typeof opts.sameSite === 'string' && opts.sameSite.toLowerCase() === 'none') {
       isSameSiteNone = true;
       if (opts.secure === false || !this.secure || (userAgent && !this.isSameSiteNoneCompatible(userAgent))) {
@@ -157,7 +178,9 @@ class Cookies {
       });
       const removeUnpartitionedCookie = new Cookie(name, '', removeCookieOpts);
       // if user not set secure, reset secure to ctx.secure
-      if (opts.secure === undefined) removeUnpartitionedCookie.attrs.secure = this.secure;
+      if (opts.secure === undefined) {
+        removeUnpartitionedCookie.attrs.secure = this.secure;
+      }
 
       headers = pushCookie(headers, removeUnpartitionedCookie);
       // signed
@@ -168,10 +191,11 @@ class Cookies {
       }
     } else if (autoChips) {
       // add _CHIPS-${name} prefix cookie
-      const newCookieName = this._formatChipsCookieName(name);
-      const newCookieOpts = Object.assign({}, opts, {
+      const newCookieName = this.#formatChipsCookieName(name);
+      const newCookieOpts = {
+        ...opts,
         partitioned: true,
-      });
+      };
       const newPartitionedCookie = new Cookie(newCookieName, value, newCookieOpts);
       // if user not set secure, reset secure to ctx.secure
       if (opts.secure === undefined) newPartitionedCookie.attrs.secure = this.secure;
@@ -188,7 +212,9 @@ class Cookies {
 
     const cookie = new Cookie(name, value, opts);
     // if user not set secure, reset secure to ctx.secure
-    if (opts.secure === undefined) cookie.attrs.secure = this.secure;
+    if (opts.secure === undefined) {
+      cookie.attrs.secure = this.secure;
+    }
     headers = pushCookie(headers, cookie);
 
     // signed
@@ -202,63 +228,76 @@ class Cookies {
     return this;
   }
 
-  _formatChipsCookieName(name) {
+  #formatChipsCookieName(name: string) {
     return `_CHIPS-${name}`;
   }
 
-  _parseChromiumAndMajorVersion(userAgent) {
-    if (!this[PARSED_UA]) {
-      this[PARSED_UA] = parseChromiumAndMajorVersion(userAgent);
+  #parseChromiumAndMajorVersion(userAgent: string) {
+    if (!this.#parseChromiumResult) {
+      this.#parseChromiumResult = parseChromiumAndMajorVersion(userAgent);
     }
-    return this[PARSED_UA];
+    return this.#parseChromiumResult;
   }
 
-  isSameSiteNoneCompatible(userAgent) {
+  isSameSiteNoneCompatible(userAgent: string) {
     // Chrome >= 80.0.0.0
-    const result = this._parseChromiumAndMajorVersion(userAgent);
-    if (result.chromium) return result.majorVersion >= 80;
-    return _isSameSiteNoneCompatible(userAgent);
+    const result = this.#parseChromiumAndMajorVersion(userAgent);
+    if (result.chromium) {
+      return result.majorVersion >= 80;
+    }
+    return isSameSiteNoneCompatible(userAgent);
   }
 
-  isPartitionedCompatible(userAgent) {
+  isPartitionedCompatible(userAgent: string) {
     // support: Chrome >= 114.0.0.0
     // default enable: Chrome >= 118.0.0.0
     // https://developers.google.com/privacy-sandbox/3pcd/chips
-    const result = this._parseChromiumAndMajorVersion(userAgent);
-    if (result.chromium) return result.majorVersion >= 118;
+    const result = this.#parseChromiumAndMajorVersion(userAgent);
+    if (result.chromium) {
+      return result.majorVersion >= 118;
+    }
     return false;
   }
 }
 
+interface ParseChromiumResult {
+  chromium: boolean;
+  majorVersion: number;
+}
+
 // https://github.com/linsight/should-send-same-site-none/blob/master/index.js#L86
-function parseChromiumAndMajorVersion(userAgent) {
-  const m = /Chrom[^ \/]{1,100}\/(\d{1,100}?)\./.exec(userAgent);
-  if (!m) return { chromium: false, version: null };
+function parseChromiumAndMajorVersion(userAgent: string): ParseChromiumResult {
+  const m = /Chrom[^ /]{1,100}\/(\d{1,100}?)\./.exec(userAgent);
+  if (!m) {
+    return { chromium: false, majorVersion: 0 };
+  }
   // Extract digits from first capturing group.
   return { chromium: true, majorVersion: parseInt(m[1]) };
 }
 
-const _patternCache = new Map();
-function getPattern(name) {
+const _patternCache = new Map<string, RegExp>();
+function getPattern(name: string) {
   const cache = _patternCache.get(name);
-  if (cache) return cache;
+  if (cache) {
+    return cache;
+  }
   const reg = new RegExp(
     '(?:^|;) *' +
     name.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&') +
-    '=([^;]*)'
+    '=([^;]*)',
   );
   _patternCache.set(name, reg);
   return reg;
 }
 
-function computeSigned(opts) {
+function computeSigned(opts: { encrypt?: boolean; signed?: boolean }) {
   // encrypt default to false, signed default to true.
   // disable singed when encrypt is true.
   if (opts.encrypt) return false;
   return opts.signed !== false;
 }
 
-function pushCookie(cookies, cookie) {
+function pushCookie(cookies: string[], cookie: Cookie) {
   if (cookie.attrs.overwrite) {
     cookies = ignoreCookiesByName(cookies, cookie.name);
   }
@@ -266,10 +305,7 @@ function pushCookie(cookies, cookie) {
   return cookies;
 }
 
-function ignoreCookiesByName(cookies, name) {
+function ignoreCookiesByName(cookies: string[], name: string) {
   const prefix = `${name}=`;
   return cookies.filter(c => !c.startsWith(prefix));
 }
-
-Cookies.CookieError = CookieError;
-module.exports = Cookies;
