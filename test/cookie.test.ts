@@ -1,41 +1,33 @@
-'use strict';
+import { strict as assert } from 'node:assert';
+import { Cookie } from '../src/index.js';
 
-const assert = require('assert');
-const Cookie = require('../../lib/cookie');
-
-function assertExceptionCheck(expectedMsg) {
-  return err => {
-    return err.message === expectedMsg;
-  };
-}
-
-describe('test/lib/cookie.test.js', () => {
+describe('test/cookie.test.ts', () => {
   it('create cookies contains invalid string error should throw', () => {
-    assert.throws(() => new Cookie('中文', 'value'), assertExceptionCheck('argument name is invalid'));
-    assert.throws(() => new Cookie('name', '中文'), assertExceptionCheck('argument value is invalid'));
-    assert.throws(() => new Cookie('name', 'value', { path: '中文' }), assertExceptionCheck('argument option path is invalid'));
-    assert.throws(() => new Cookie('name', 'value', { domain: '中文' }), assertExceptionCheck('argument option domain is invalid'));
+    assert.throws(() => new Cookie('中文', 'value'), /argument name is invalid/);
+    assert.throws(() => new Cookie('name', '中文'), /argument value is invalid/);
+    assert.throws(() => new Cookie('name', 'value', { path: '中文' }), /argument option path is invalid/);
+    assert.throws(() => new Cookie('name', 'value', { domain: '中文' }), /argument option domain is invalid/);
   });
 
   it('set expires to 0 if value not present', () => {
-    assert(new Cookie('name', null).attrs.expires.getTime() === 0);
+    assert.equal(new Cookie('name', null).attrs.expires!.getTime(), 0);
   });
 
   describe('toString()', () => {
-    it('return name=vaule', () => {
-      assert(new Cookie('name', 'value').toString() === 'name=value');
+    it('return name=value', () => {
+      assert.equal(new Cookie('name', 'value').toString(), 'name=value');
     });
   });
 
   describe('toHeader()', () => {
-    it('return name=vaule;params', () => {
-      assert(new Cookie('name', 'value', {
+    it('return name=value;params', () => {
+      assert.match(new Cookie('name', 'value', {
         secure: true,
         maxAge: 1000,
         domain: 'eggjs.org',
         path: '/',
         httpOnly: true,
-      }).toHeader().match(/^name=value; path=\/; max-age=1; expires=(.*?)GMT; domain=eggjs\.org; secure; httponly$/));
+      }).toHeader(), /^name=value; path=\/; max-age=1; expires=(.*?)GMT; domain=eggjs\.org; secure; httponly$/);
     });
 
     it('set domain when domain is a function', () => {
@@ -48,18 +40,18 @@ describe('test/lib/cookie.test.js', () => {
       }).toHeader().match(/^name=value; path=\/; max-age=1; expires=(.*?)GMT; domain=eggjs\.org; secure; httponly$/));
     });
 
-    it('donnot set path when set path to null', () => {
+    it('do not set path when set path to null', () => {
       const header = new Cookie('name', 'value', {
         path: null,
       }).toHeader();
-      assert(!header.match(/path=/));
+      assert.doesNotMatch(header, /path=/);
     });
 
-    it('donnot set httponly when set httpOnly to false', () => {
+    it('do not set httponly when set httpOnly to false', () => {
       const header = new Cookie('name', 'value', {
         httpOnly: false,
       }).toHeader();
-      assert(!header.match(/httponly/));
+      assert.doesNotMatch(header, /httponly/);
     });
   });
 
@@ -73,7 +65,7 @@ describe('test/lib/cookie.test.js', () => {
         path: '/',
         httpOnly: true,
       }).toHeader();
-      assert(header.match(/expires=Wed, 01 Jan 2020 00:00:00 GMT/));
+      assert.match(header, /expires=Wed, 01 Jan 2020 00:00:00 GMT/);
       header = new Cookie('name', 'value', {
         secure: true,
         maxAge: 1000,
@@ -88,7 +80,7 @@ describe('test/lib/cookie.test.js', () => {
     it('ignore maxage NaN', () => {
       const header = new Cookie('name', 'value', {
         secure: true,
-        maxAge: 'session',
+        maxAge: 'session' as any,
         domain: 'eggjs.org',
         path: '/',
         httpOnly: true,
@@ -127,7 +119,7 @@ describe('test/lib/cookie.test.js', () => {
       it('should not add "samesite" attribute in header', () => {
         const falsyValues = [ false, 0, '', null, undefined, NaN ];
         falsyValues.forEach(falsy => {
-          const cookie = new Cookie('foo', 'bar', { sameSite: falsy });
+          const cookie = new Cookie('foo', 'bar', { sameSite: falsy as any });
           assert.ok(Object.is(cookie.attrs.sameSite, falsy));
           assert.equal(cookie.toHeader(), 'foo=bar; path=/; httponly');
         });
@@ -195,7 +187,7 @@ describe('test/lib/cookie.test.js', () => {
 
     it('should throw on invalid value', () => {
       assert.throws(() => {
-        new Cookie('foo', 'bar', { priority: 'foo' });
+        new Cookie('foo', 'bar', { priority: 'foo' as any });
       }, /argument option priority is invalid/);
     });
 

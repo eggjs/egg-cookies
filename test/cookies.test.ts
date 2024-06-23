@@ -1,17 +1,15 @@
-'use strict';
+import { strict as assert } from 'node:assert';
+import { CookieError, CookieSetOptions } from '../src/index.js';
+import Cookies from './cookies.js';
 
-const Cookies = require('../cookies');
-const assert = require('assert');
-const CookieError = require('../../lib/error');
-
-describe('test/lib/cookies.test.js', () => {
+describe('test/cookies.test.ts', () => {
   it('should encrypt error when keys not present', () => {
     const cookies = Cookies({}, { keys: null });
     try {
       cookies.set('foo', 'bar', { encrypt: true });
       throw new Error('should not exec');
-    } catch (err) {
-      assert(err.message === '.keys required for encrypt/sign cookies');
+    } catch (err: any) {
+      assert.equal(err.message, '.keys required for encrypt/sign cookies');
     }
   });
 
@@ -30,9 +28,12 @@ describe('test/lib/cookies.test.js', () => {
     assert(cookie.indexOf('bar') === -1);
   });
 
-  it('should cache eygrip', () => {
+  it('should cache keygrip', () => {
     const keys = [ 'key' ];
-    assert(Cookies({}, { keys }).keys === Cookies({}, { keys }).keys); // eslint-disable-line no-self-compare
+    assert.equal(Cookies({}, { keys }).keys, Cookies({}, { keys }).keys);
+    assert.equal(Cookies({}, { keys }).keys, Cookies({}, { keys }).keys);
+    assert.equal(Cookies({}, { keys }).keys, Cookies({}, { keys }).keys);
+    assert.notEqual(Cookies({}, { keys }).keys, Cookies({}, { keys: [ 'foo' ] }).keys);
   });
 
   it('should encrypt failed return undefined', () => {
@@ -226,7 +227,7 @@ describe('test/lib/cookies.test.js', () => {
   it('should emit cookieLimitExceed event in app when value\'s length exceed the limit', done => {
     const cookies = Cookies();
     const value = Buffer.alloc(4094).fill(49).toString();
-    cookies.app.on('cookieLimitExceed', params => {
+    cookies.app.on('cookieLimitExceed', (params: any) => {
       assert(params.name === 'foo');
       assert(params.value === value);
       assert(params.ctx);
@@ -241,7 +242,7 @@ describe('test/lib/cookies.test.js', () => {
 
   it('should opts do not modify', () => {
     const cookies = Cookies({ secure: true });
-    const opts = {
+    const opts: CookieSetOptions = {
       signed: 1,
     };
     cookies.set('foo', 'hello', opts);
@@ -253,7 +254,7 @@ describe('test/lib/cookies.test.js', () => {
 
   it('should defaultCookieOptions with sameSite=lax', () => {
     const cookies = Cookies({ secure: true }, null, { sameSite: 'lax' });
-    const opts = {
+    const opts: CookieSetOptions = {
       signed: 1,
     };
     cookies.set('foo', 'hello', opts);
@@ -282,7 +283,7 @@ describe('test/lib/cookies.test.js', () => {
           'user-agent': ua,
         },
       }, { secure: true }, { sameSite: 'None' });
-      const opts = {
+      const opts: CookieSetOptions = {
         signed: 1,
       };
       cookies.set('foo', 'hello', opts);
@@ -303,7 +304,7 @@ describe('test/lib/cookies.test.js', () => {
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.29 Safari/537.36',
       },
     }, { secure: true }, { sameSite: 'None' });
-    const opts = {
+    const opts: CookieSetOptions = {
       signed: 1,
     };
     cookies.set('foo', 'hello', opts);
@@ -323,7 +324,7 @@ describe('test/lib/cookies.test.js', () => {
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3945.29 Safari/537.36',
       },
     }, { secure: true }, { sameSite: 'None' });
-    const opts = {
+    const opts: CookieSetOptions = {
       signed: 1,
     };
     cookies.set('foo', 'hello', opts);
@@ -359,7 +360,7 @@ describe('test/lib/cookies.test.js', () => {
       },
     }, { secure: true }, { sameSite: 'none' });
 
-    const opts = {
+    const opts: CookieSetOptions = {
       signed: 1,
     };
     cookies.set('foo', 'hello', opts);
@@ -379,7 +380,7 @@ describe('test/lib/cookies.test.js', () => {
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.3945.29 Safari/537.36',
       },
     }, null, { sameSite: 'none' });
-    const opts = {
+    const opts: CookieSetOptions = {
       signed: 1,
     };
     cookies.set('foo', 'hello', opts);
@@ -400,7 +401,7 @@ describe('test/lib/cookies.test.js', () => {
       },
     }, { secure: true }, { sameSite: 'none' });
 
-    const opts = {
+    const opts: CookieSetOptions = {
       signed: 1,
       secure: false,
     };
@@ -428,7 +429,7 @@ describe('test/lib/cookies.test.js', () => {
             'user-agent': ua,
           },
         }, { secure: true }, { partitioned: true, sameSite: 'None' });
-        const opts = {
+        const opts: CookieSetOptions = {
           signed: 1,
         };
         cookies.set('foo', 'hello', opts);
@@ -449,7 +450,7 @@ describe('test/lib/cookies.test.js', () => {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.3945.29 Safari/537.36',
         },
       }, { secure: true }, { partitioned: true, sameSite: 'None' });
-      const opts = {
+      const opts: CookieSetOptions = {
         signed: 1,
       };
       cookies.set('foo', 'hello', opts);
@@ -469,7 +470,7 @@ describe('test/lib/cookies.test.js', () => {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
         },
       }, { secure: true }, { partitioned: true, sameSite: 'None' });
-      const opts = {
+      const opts: CookieSetOptions = {
         signed: 1,
       };
       cookies.set('foo', 'hello', opts);
@@ -538,7 +539,7 @@ describe('test/lib/cookies.test.js', () => {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.3945.29 Safari/537.36',
         },
       }, null, { partitioned: true, sameSite: 'None' });
-      const opts = {
+      const opts: CookieSetOptions = {
         signed: 1,
       };
       cookies.set('foo', 'hello', opts);
@@ -558,7 +559,7 @@ describe('test/lib/cookies.test.js', () => {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
         },
       }, { secure: true }, { partitioned: true, removeUnpartitioned: true, sameSite: 'None' });
-      const opts = {
+      const opts: CookieSetOptions = {
         signed: 1,
       };
       cookies.set('foo', 'hello', opts);
@@ -581,7 +582,7 @@ describe('test/lib/cookies.test.js', () => {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
         },
       }, { secure: true }, { partitioned: true, removeUnpartitioned: true, sameSite: 'None' });
-      const opts = {
+      const opts: CookieSetOptions = {
         secure: true,
         signed: false,
       };
@@ -603,7 +604,7 @@ describe('test/lib/cookies.test.js', () => {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
         },
       }, { secure: true }, { partitioned: true, removeUnpartitioned: true, overwrite: true, sameSite: 'none' });
-      const opts = {
+      const opts: CookieSetOptions = {
         signed: 1,
       };
       cookies.set('foo', 'hello2222', opts);
@@ -626,7 +627,7 @@ describe('test/lib/cookies.test.js', () => {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
         },
       }, { secure: true }, { partitioned: true, removeUnpartitioned: true, sameSite: 'None' });
-      const opts = {
+      const opts: CookieSetOptions = {
         signed: 1,
         secure: false,
       };
@@ -646,7 +647,7 @@ describe('test/lib/cookies.test.js', () => {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
         },
       }, { secure: true }, { partitioned: true, removeUnpartitioned: true });
-      const opts = {
+      const opts: CookieSetOptions = {
         signed: 1,
       };
       cookies.set('foo', 'hello', opts);
@@ -673,7 +674,7 @@ describe('test/lib/cookies.test.js', () => {
             'user-agent': ua,
           },
         }, { secure: true }, { autoChips: true, sameSite: 'None' });
-        const opts = {
+        const opts: CookieSetOptions = {
           signed: 1,
         };
         cookies.set('foo', 'hello', opts);
@@ -694,7 +695,7 @@ describe('test/lib/cookies.test.js', () => {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.3945.29 Safari/537.36',
         },
       }, { secure: true }, { autoChips: true, sameSite: 'None' });
-      const opts = {
+      const opts: CookieSetOptions = {
         signed: 1,
       };
       cookies.set('foo', 'hello', opts);
@@ -714,7 +715,7 @@ describe('test/lib/cookies.test.js', () => {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
         },
       }, { secure: true }, { autoChips: true, sameSite: 'None' });
-      const opts = {
+      const opts: CookieSetOptions = {
         signed: 1,
       };
       cookies.set('foo', 'hello', opts);
@@ -837,7 +838,7 @@ describe('test/lib/cookies.test.js', () => {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.3945.29 Safari/537.36',
         },
       }, null, { autoChips: true, sameSite: 'None' });
-      const opts = {
+      const opts: CookieSetOptions = {
         signed: 1,
       };
       cookies.set('foo', 'hello', opts);
@@ -857,7 +858,7 @@ describe('test/lib/cookies.test.js', () => {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
         },
       }, { secure: true }, { autoChips: true, partitioned: true, sameSite: 'None' });
-      const opts = {
+      const opts: CookieSetOptions = {
         signed: 1,
       };
       cookies.set('foo', 'hello', opts);
@@ -878,7 +879,7 @@ describe('test/lib/cookies.test.js', () => {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
         },
       }, { secure: true }, { autoChips: true, partitioned: false, removeUnpartitioned: true, sameSite: 'None' });
-      const opts = {
+      const opts: CookieSetOptions = {
         signed: 1,
       };
       cookies.set('foo', 'hello', opts);
@@ -901,7 +902,7 @@ describe('test/lib/cookies.test.js', () => {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
         },
       }, { secure: true }, { autoChips: true, partitioned: false, removeUnpartitioned: true, sameSite: 'None' });
-      const opts = {
+      const opts: CookieSetOptions = {
         secure: true,
         signed: false,
       };
@@ -923,7 +924,7 @@ describe('test/lib/cookies.test.js', () => {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
         },
       }, { secure: true }, { autoChips: true, overwrite: true, sameSite: 'none' });
-      const opts = {
+      const opts: CookieSetOptions = {
         signed: 1,
       };
       cookies.set('foo', 'hello2222', opts);
@@ -946,7 +947,7 @@ describe('test/lib/cookies.test.js', () => {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
         },
       }, { secure: true }, { autoChips: true, sameSite: 'None' });
-      const opts = {
+      const opts: CookieSetOptions = {
         signed: 1,
         secure: false,
       };
@@ -966,7 +967,7 @@ describe('test/lib/cookies.test.js', () => {
           'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
         },
       }, { secure: true }, { autoChips: true });
-      const opts = {
+      const opts: CookieSetOptions = {
         signed: 1,
       };
       cookies.set('foo', 'hello', opts);
