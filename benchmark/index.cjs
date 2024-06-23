@@ -1,10 +1,8 @@
-'use strict';
-
 const Benchmark = require('benchmark');
 const benchmarks = require('beautify-benchmark');
 const Cookies = require('cookies');
 const Keygrip = require('keygrip');
-const EggCookies = require('..');
+const { Cookies: EggCookies } = require('..');
 
 const suite = new Benchmark.Suite();
 
@@ -125,6 +123,25 @@ function createCookie() {
   return new Cookies(ctx.req, ctx.res, { keys: keygrip });
 }
 
+// v3
+// node version: v22.3.0, date: Sun Jun 23 2024 17:19:38 GMT+0800 (中国标准时间)
+// Starting...
+// 12 tests completed.
+
+// create EggCookie              x 26,305,561 ops/sec ±3.41% (87 runs sampled)
+// create Cookie                 x 18,373,466 ops/sec ±8.96% (81 runs sampled)
+// EggCookies.set with signed    x    453,511 ops/sec ±1.37% (97 runs sampled)
+// Cookies.set with signed       x    442,143 ops/sec ±2.48% (92 runs sampled)
+// EggCookies.set without signed x  4,644,441 ops/sec ±2.05% (95 runs sampled)
+// Cookies.set without signed    x  4,055,903 ops/sec ±0.14% (98 runs sampled)
+// EggCookies.set with encrypt   x    477,018 ops/sec ±1.10% (97 runs sampled)
+// EggCookies.get with signed    x    367,708 ops/sec ±0.29% (92 runs sampled)
+// Cookies.get with signed       x    133,608 ops/sec ±4.24% (87 runs sampled)
+// EggCookies.get without signed x  9,233,880 ops/sec ±8.40% (86 runs sampled)
+// Cookies.get without signed    x  7,135,602 ops/sec ±4.52% (86 runs sampled)
+// EggCookies.get with encrypt   x    423,227 ops/sec ±2.52% (89 runs sampled)
+
+// v2
 // create EggCookie              x 6,892,450 ops/sec ±1.19% (85 runs sampled)
 // create Cookie                 x 3,885,528 ops/sec ±1.07% (84 runs sampled)
 // EggCookies.set with signed    x    87,470 ops/sec ±1.63% (84 runs sampled)
