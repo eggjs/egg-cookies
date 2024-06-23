@@ -1,5 +1,50 @@
 # Changelog
 
+## [3.0.0](https://github.com/eggjs/egg-cookies/compare/v2.10.0...v3.0.0) (2024-06-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop Node.js < 18.19.0 support
+
+part of https://github.com/eggjs/egg/issues/3644
+
+<!-- This is an auto-generated comment: release notes by coderabbit.ai
+-->
+
+## Summary by CodeRabbit
+
+- **New Features**
+- Introduced comprehensive support for TypeScript in project
+configurations.
+- Added new cookie management functionalities, including setting,
+encryption, and validation.
+  - Added support for `Keygrip` class for cryptographic operations.
+
+- **Documentation**
+- Updated package name in README files from `egg-cookies` to
+`@eggjs/cookies`.
+- Adjusted code snippets and URLs in documentation to reflect the new
+package name.
+
+- **Tests**
+- Enhanced test suite with additional test cases for cookie encryption,
+caching, and error handling.
+  - Added new test files for `Keygrip` and cookie functionalities.
+  
+- **Chores**
+  - Updated `.gitignore` to include new patterns for ignoring files.
+- Improved CI workflow with updated Node.js versions and Codecov token
+integration.
+- Updated dependencies and scripts in `package.json` to align with the
+new package structure and TypeScript support.
+
+<!-- end of auto-generated comment: release notes by coderabbit.ai -->
+
+### Features
+
+* support cjs and esm both by tshy ([#54](https://github.com/eggjs/egg-cookies/issues/54)) ([12db545](https://github.com/eggjs/egg-cookies/commit/12db545f887940560f49f792035dbf63d6ceb497))
+
 ## [2.10.0](https://github.com/eggjs/egg-cookies/compare/v2.9.4...v2.10.0) (2024-02-19)
 
 
