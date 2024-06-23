@@ -1,18 +1,18 @@
-# egg-cookies
+# egg-cookies@2
 
 [![NPM version][npm-image]][npm-url]
 [![build status][ci-image]][ci-url]
 [![Test coverage][codecov-image]][codecov-url]
 [![npm download][download-image]][download-url]
 
-[npm-image]: https://img.shields.io/npm/v/egg-cookies.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/egg-cookies
-[ci-image]: https://github.com/eggjs/egg-cookies/actions/workflows/nodejs.yml/badge.svg
-[ci-url]: https://github.com/eggjs/egg-cookies/actions/workflows/nodejs.yml
-[codecov-image]: https://codecov.io/gh/eggjs/egg-cookies/branch/master/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/eggjs/egg-cookies
+[npm-image]: https://img.shields.io/npm/v/egg-cookies/release-2.x.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/egg-cookies/v/release-2.x
+[ci-image]: https://github.com/eggjs/egg-cookies/actions/workflows/nodejs-2.x.yml/badge.svg
+[ci-url]: https://github.com/eggjs/egg-cookies/actions/workflows/nodejs-2.x.yml
+[codecov-image]: https://codecov.io/gh/eggjs/egg-cookies/branch/2.x/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/eggjs/egg-cookies/tree/2.x
 [download-image]: https://img.shields.io/npm/dm/egg-cookies.svg?style=flat-square
-[download-url]: https://npmjs.org/package/egg-cookies
+[download-url]: https://npmjs.org/package/egg-cookies/v/release-2.x
 
 为 egg 提供 cookie 操作的封装。
 

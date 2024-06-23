@@ -1,11 +1,10 @@
-name: CI
+name: CI for 2.x
 
 on:
   push:
-    branches: [ master ]
-
+    branches: [ 2.x ]
   pull_request:
-    branches: [ master ]
+    branches: [ 2.x ]
 
 jobs:
   Job:
@@ -13,4 +12,6 @@ jobs:
     uses: node-modules/github-actions/.github/workflows/node-test.yml@master
     with:
       os: 'ubuntu-latest'
-      version: '10, 12, 14, 16, 18, 20'
+      version: '10, 12, 14, 16, 18, 20, 22'
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
