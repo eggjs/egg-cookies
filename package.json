@@ -23,7 +23,7 @@
     "@types/mocha": "10",
     "egg-bin": "6",
     "eslint": "8",
-    "eslint-config-egg": "13",
+    "eslint-config-egg": "14",
     "tshy": "1",
     "tshy-after": "1",
     "typescript": "5"
