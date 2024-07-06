@@ -850,6 +850,37 @@ describe('test/lib/cookies.test.js', () => {
       }
     });
 
+    it('should ignore remove unpartitioned property with different paths', () => {
+      const cookies = Cookies({
+        secure: true,
+        headers: {
+          'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
+        },
+      }, { secure: true }, { autoChips: true, partitioned: false, removeUnpartitioned: true, sameSite: 'None' });
+      const opts = {
+        signed: 1,
+      };
+      cookies.set('foo', 'hello', opts);
+      cookies.set('foo', 'hello', {
+        signed: 1,
+        path: '/path2',
+      });
+
+      assert(opts.signed === 1);
+      assert(opts.secure === undefined);
+      const headers = cookies.ctx.response.headers['set-cookie'];
+      assert.deepEqual(headers, [
+        '_CHIPS-foo=hello; path=/; samesite=none; secure; httponly; partitioned',
+        '_CHIPS-foo.sig=G4Idm9Wdp_vfCnUbOpQG284o22SgTe88SUmG6QW1ylk; path=/; samesite=none; secure; httponly; partitioned',
+        'foo=hello; path=/; samesite=none; secure; httponly',
+        'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/; samesite=none; secure; httponly',
+        '_CHIPS-foo=hello; path=/path2; samesite=none; secure; httponly; partitioned',
+        '_CHIPS-foo.sig=G4Idm9Wdp_vfCnUbOpQG284o22SgTe88SUmG6QW1ylk; path=/path2; samesite=none; secure; httponly; partitioned',
+        'foo=hello; path=/path2; samesite=none; secure; httponly',
+        'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; path=/path2; samesite=none; secure; httponly',
+      ]);
+    });
+
     it('should disable autoChips when partitioned=true', () => {
       const cookies = Cookies({
         secure: true,
