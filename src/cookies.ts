@@ -173,9 +173,10 @@ export class Cookies {
         opts.overwrite = false;
         headers = ignoreCookiesByName(headers, name);
       }
-      const removeCookieOpts = Object.assign({}, opts, {
+      const removeCookieOpts = {
+        ...opts,
         partitioned: false,
-      });
+      };
       const removeUnpartitionedCookie = new Cookie(name, '', removeCookieOpts);
       // if user not set secure, reset secure to ctx.secure
       if (opts.secure === undefined) {
@@ -186,7 +187,8 @@ export class Cookies {
       // signed
       if (signed) {
         removeUnpartitionedCookie.name += '.sig';
-        headers = ignoreCookiesByName(headers, removeUnpartitionedCookie.name);
+        headers = ignoreCookiesByNameAndPath(headers,
+          removeUnpartitionedCookie.name, removeUnpartitionedCookie.attrs.path);
         headers = pushCookie(headers, removeUnpartitionedCookie);
       }
     } else if (autoChips) {
@@ -205,7 +207,8 @@ export class Cookies {
       if (signed) {
         newPartitionedCookie.value = value && this.keys.sign(newPartitionedCookie.toString());
         newPartitionedCookie.name += '.sig';
-        headers = ignoreCookiesByName(headers, newPartitionedCookie.name);
+        headers = ignoreCookiesByNameAndPath(headers,
+          newPartitionedCookie.name, newPartitionedCookie.attrs.path);
         headers = pushCookie(headers, newPartitionedCookie);
       }
     }
@@ -308,4 +311,23 @@ function pushCookie(cookies: string[], cookie: Cookie) {
 function ignoreCookiesByName(cookies: string[], name: string) {
   const prefix = `${name}=`;
   return cookies.filter(c => !c.startsWith(prefix));
+}
+
+function ignoreCookiesByNameAndPath(cookies: string[], name: string, path: string | null | undefined) {
+  if (!path) {
+    return ignoreCookiesByName(cookies, name);
+  }
+  const prefix = `${name}=`;
+  // foo=hello; path=/path1; samesite=none
+  const includedPath = `; path=${path};`;
+  // foo=hello; path=/path1
+  const endsWithPath = `; path=${path}`;
+  return cookies.filter(c => {
+    if (c.startsWith(prefix)) {
+      if (c.includes(includedPath) || c.endsWith(endsWithPath)) {
+        return false;
+      }
+    }
+    return true;
+  });
 }
