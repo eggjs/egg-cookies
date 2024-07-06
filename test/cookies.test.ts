@@ -992,6 +992,44 @@ describe('test/cookies.test.ts', () => {
       ]);
     });
 
+    it('should work on unpartitioned = true and partitioned = true with different null path', () => {
+      const cookies = Cookies({
+        secure: true,
+        headers: {
+          'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.3945.29 Safari/537.36',
+        },
+      }, { secure: true }, { partitioned: true, removeUnpartitioned: true, sameSite: 'None' });
+      cookies.set('foo', 'hello', {
+        signed: 1,
+      });
+      cookies.set('foo', 'hello', {
+        signed: 1,
+        path: '/path1',
+      });
+      cookies.set('foo', 'hello', {
+        signed: 1,
+        path: '/path2',
+      });
+      cookies.set('foo', 'hello', {
+        signed: 1,
+        path: null,
+      });
+
+      const headers = cookies.ctx.response.headers['set-cookie'];
+      assert.deepEqual(headers, [
+        'foo=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=none; secure; httponly',
+        'foo=hello; path=/; samesite=none; secure; httponly; partitioned',
+        'foo=; path=/path1; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=none; secure; httponly',
+        'foo=hello; path=/path1; samesite=none; secure; httponly; partitioned',
+        'foo=; path=/path2; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=none; secure; httponly',
+        'foo=hello; path=/path2; samesite=none; secure; httponly; partitioned',
+        'foo=; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=none; secure; httponly',
+        'foo.sig=; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=none; secure; httponly',
+        'foo=hello; samesite=none; secure; httponly; partitioned',
+        'foo.sig=ZWbaA4bWk8ByBuYVgfmJ2DMvhhS3sOctMbfXAQ2vnwI; samesite=none; secure; httponly; partitioned',
+      ]);
+    });
+
     it('should work with overwrite = true', () => {
       const cookies = Cookies({
         secure: true,
