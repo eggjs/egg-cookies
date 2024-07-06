@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/eggjs/egg-cookies/compare/v3.0.0...v3.0.1) (2024-07-06)
+
+
+### Bug Fixes
+
+* partitioned and autoChips should support different paths ([#55](https://github.com/eggjs/egg-cookies/issues/55)) ([50b1313](https://github.com/eggjs/egg-cookies/commit/50b1313172d1180569c556f3ab05448ab3bb3100))
+
 ## [3.0.0](https://github.com/eggjs/egg-cookies/compare/v2.10.0...v3.0.0) (2024-06-23)
 
 
