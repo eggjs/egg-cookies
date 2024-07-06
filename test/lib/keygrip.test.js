@@ -33,6 +33,9 @@ describe('test/lib/keygrip.test.js', () => {
   });
 
   it('should decrypt key encrypted by createCipher without error', () => {
+    if (!crypto.createCipher) {
+      return;
+    }
     const keygrip = new Keygrip([ 'foo' ]);
     const encrypted = keygrip.encrypt('hello');
 
