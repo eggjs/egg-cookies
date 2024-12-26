@@ -123,9 +123,12 @@ export class Cookies {
       ...opts,
     };
     const signed = computeSigned(opts);
+    const shouldIgnoreSecureError = opts && opts.ignoreSecureError;
     value = value || '';
-    if (!this.secure && opts.secure) {
-      throw new CookieError('Cannot send secure cookie over unencrypted connection');
+    if (!shouldIgnoreSecureError) {
+      if (!this.secure && opts.secure) {
+        throw new CookieError('Cannot send secure cookie over unencrypted connection');
+      }
     }
 
     let headers: string[] = this.ctx.response.get('set-cookie') || [];

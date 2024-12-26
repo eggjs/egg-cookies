@@ -57,6 +57,11 @@ export interface CookieSetOptions {
   * Encrypt the cookie's value or not
   */
   secure?: boolean;
+
+  /**
+  * Once `true` and secure set to `true`, ignore the secure error in a none-ssl environment.
+  */
+  ignoreSecureError?: boolean;
   /**
    * Is it signed or not.
    */
