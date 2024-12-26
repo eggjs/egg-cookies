@@ -2,6 +2,7 @@ import { strict as assert } from 'node:assert';
 import { Cookie } from '../src/index.js';
 
 describe('test/cookie.test.ts', () => {
+
   it('create cookies contains invalid string error should throw', () => {
     assert.throws(() => new Cookie('中文', 'value'), /argument name is invalid/);
     assert.throws(() => new Cookie('name', '中文'), /argument value is invalid/);
@@ -19,6 +20,7 @@ describe('test/cookie.test.ts', () => {
     });
   });
 
+
   describe('toHeader()', () => {
     it('return name=value;params', () => {
       assert.match(new Cookie('name', 'value', {
@@ -28,6 +30,37 @@ describe('test/cookie.test.ts', () => {
         path: '/',
         httpOnly: true,
       }).toHeader(), /^name=value; path=\/; max-age=1; expires=(.*?)GMT; domain=eggjs\.org; secure; httponly$/);
+    });
+
+    it('no emit error once setting secure=true in none ssl environment', () => {
+      try {
+        new Cookie('name', 'value', {
+          secure: true,
+          ignoreSecureError: true,
+        });
+      } catch (error) {
+        assert.fail('There should not be any exception');
+      }
+    });
+
+    it('no emit error once setting secure=true in none ssl environment', () => {
+      const exceptionMessage = 'Cannot send secure cookie over unencrypted connection';
+      try {
+        new Cookie('name', 'value', {
+          secure: true,
+        });
+      } catch (error) {
+        assert.strictEqual((error as Error).message, exceptionMessage);
+      }
+
+      try {
+        new Cookie('name', 'value', {
+          secure: true,
+          ignoreSecureError: false,
+        });
+      } catch (error) {
+        assert.strictEqual((error as Error).message, exceptionMessage);
+      }
     });
 
     it('set domain when domain is a function', () => {
