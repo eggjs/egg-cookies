@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/eggjs/egg-cookies/compare/v3.0.1...v3.1.0) (2024-12-26)
+
+
+### Features
+
+* support ignoring secure error ([#58](https://github.com/eggjs/egg-cookies/issues/58)) ([38f98d1](https://github.com/eggjs/egg-cookies/commit/38f98d12922571f6195121500002bd8d2da4be50))
+
 ## [3.0.1](https://github.com/eggjs/egg-cookies/compare/v3.0.0...v3.0.1) (2024-07-06)
 
 
